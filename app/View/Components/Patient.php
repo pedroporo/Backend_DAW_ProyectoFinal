@@ -29,8 +29,7 @@ class Patient extends Component
         public string $housing_situation,
         public string $personal_autonomy,
         public string $economic_situation
-    ) {
-    }
+    ) {}
 
     /**
      * Get the view / contents that represent the component.
