@@ -6,9 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-enum Caso{
-    case Hola;
-}
+
 class Patient extends Component
 {
     /**
