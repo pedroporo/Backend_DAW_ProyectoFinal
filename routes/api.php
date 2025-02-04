@@ -11,7 +11,7 @@ Route::post('register', [AuthController::class, 'register'])->middleware('api');
 
 Route::middleware(['auth:sanctum', 'api'])->group(function () {
 
-    //Route::apiResource('patients', PatientController::class)->middleware('api');
+    Route::apiResource('patients', PatientController::class)->middleware('api');
     Route::post('logout', [AuthController::class, 'logout']);
 });
-Route::apiResource('patients', PatientController::class)->middleware('api');
+//Route::apiResource('patients', PatientController::class)->middleware('api');
