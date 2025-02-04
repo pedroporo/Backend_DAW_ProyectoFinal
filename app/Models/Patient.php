@@ -20,6 +20,7 @@ class Patient extends Model
         'phone',
         'email',
         'zone_id',
+        'user_id',
         'personal_situation',
         'health_situation',
         'housing_situation',

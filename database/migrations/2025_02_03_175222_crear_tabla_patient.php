@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('email');
             $table->integer('zone_id');
+            $table->integer('user_id');
             $table->string('personal_situation');
             $table->string('health_situation');
             $table->string('housing_situation');
