@@ -30,11 +30,11 @@ class PatientFactory extends Factory
             'email' => $this->faker->email,
             'zone_id' => $this->faker->randomNumber(),
             'user_id'=> $this->faker->randomNumber(),
-            'personal_situation' => $this->faker->paragraph(),
-            'health_situation' => $this->faker->paragraph(),
-            'housing_situation' => $this->faker->paragraph(),
-            'personal_autonomy' => $this->faker->paragraph(),
-            'economic_situation' => $this->faker->paragraph()
+            'personal_situation' => $this->faker->sentence(),
+            'health_situation' => $this->faker->sentence(),
+            'housing_situation' => $this->faker->sentence(),
+            'personal_autonomy' => $this->faker->sentence(),
+            'economic_situation' => $this->faker->sentence(),
         ];
     }
 }
