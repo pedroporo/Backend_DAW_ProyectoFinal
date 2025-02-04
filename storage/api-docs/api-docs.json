@@ -1,0 +1,688 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Documentation",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api": {},
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Autenticació"
+                ],
+                "summary": "Autenticació de l'usuari",
+                "operationId": "222b2625838e3c57e017987f73598fda",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "1@manager.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "1234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login correcte",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "token": {
+                                                    "type": "string",
+                                                    "example": "jwt-token"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User signed in"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autoritzat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorised."
+                                        },
+                                        "info": {
+                                            "properties": {
+                                                "error": {
+                                                    "type": "string",
+                                                    "example": "incorrect Email/Password"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/patients": {
+            "get": {
+                "tags": [
+                    "Pacientes"
+                ],
+                "summary": "Llista tots els pacients amb paginació",
+                "operationId": "0df0d65f049161931654c3e188ca8f93",
+                "responses": {
+                    "200": {
+                        "description": "Lista de pacientes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/PatientResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "properties": {
+                                                "first": {
+                                                    "type": "string",
+                                                    "example": "http://localhost/api/patients?page=1"
+                                                },
+                                                "last": {
+                                                    "type": "string",
+                                                    "example": "http://localhost/api/patients?page=3"
+                                                },
+                                                "prev": {
+                                                    "type": "string",
+                                                    "example": "null"
+                                                },
+                                                "next": {
+                                                    "type": "string",
+                                                    "example": "http://localhost/api/patients?page=2"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "from": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                },
+                                                "path": {
+                                                    "type": "string",
+                                                    "example": "http://localhost/api/patients"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "to": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 45
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Pacientes"
+                ],
+                "summary": "Crea un nuevo paciente",
+                "operationId": "2149729f1bf1af8877352f04be3a683f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatientRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Paciente creado con exito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PatientRequest"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/patients/{id}": {
+            "get": {
+                "tags": [
+                    "Pacientes"
+                ],
+                "summary": "Muestra un paciente",
+                "operationId": "900a000f9712c06fdf96fa64333bbaff",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del paciente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "El paciente :name ha sido recumerado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PatientResource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Pacientes"
+                ],
+                "summary": "Actualiza un paciente",
+                "operationId": "49d64723ad7c62df6eddc6fa8a778755",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del paciente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatientRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "El paciente :name se ha actualizado con exito.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PatientRequest"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Pacientes"
+                ],
+                "summary": "Elimina un paciente",
+                "operationId": "0187379ab8f57fd78eeb510643be993b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del paciente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "El paciente ha sido eliminado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "PatientRequest": {
+                "description": "Validació per la creació y modificacio de pacients",
+                "required": [
+                    "name",
+                    "last_name",
+                    "birth_date",
+                    "address",
+                    "city",
+                    "postal_code",
+                    "dni",
+                    "health_card_number",
+                    "phone",
+                    "email",
+                    "zone_id",
+                    "user_id",
+                    "personal_situation",
+                    "health_situation",
+                    "housing_situation",
+                    "personal_autonomy",
+                    "economic_situation"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Nombre del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Pedro"
+                    },
+                    "last_name": {
+                        "description": "Apellidos del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Guill Ferri"
+                    },
+                    "birth_date": {
+                        "description": "Data de naixement del paciente.",
+                        "type": "string",
+                        "format": "date",
+                        "example": "15-05-2002"
+                    },
+                    "address": {
+                        "description": "Direccion del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "90819 Schamberger Parkway Apt"
+                    },
+                    "city": {
+                        "description": "Ciudad del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "North Madge"
+                    },
+                    "postal_code": {
+                        "description": "Codigo postal del paciente",
+                        "type": "integer",
+                        "example": 3340
+                    },
+                    "dni": {
+                        "description": "Dni del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "36604710A"
+                    },
+                    "health_card_number": {
+                        "description": "Numero social",
+                        "type": "integer",
+                        "example": 51166090
+                    },
+                    "phone": {
+                        "description": "Numero telefonico del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "+34 615 78 7729"
+                    },
+                    "email": {
+                        "description": "Correo electronico del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "kendrick63@gleichner.net"
+                    },
+                    "zone_id": {
+                        "description": "Id de la zona en la que vive",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "description": "Id del operador",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "personal_situation": {
+                        "description": "Situacion personal del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Lorem ipsum"
+                    },
+                    "health_situation": {
+                        "description": "Situacion de vida del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Lorem ipsum"
+                    },
+                    "housing_situation": {
+                        "description": "Situacion de vivienda del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Lorem ipsum"
+                    },
+                    "personal_autonomy": {
+                        "description": "Autonomia del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Lorem ipsum"
+                    },
+                    "economic_situation": {
+                        "description": "Situacion economica del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Lorem ipsum"
+                    }
+                },
+                "type": "object"
+            },
+            "PatientResource": {
+                "description": "Esquema del recurs Patient",
+                "properties": {
+                    "name": {
+                        "description": "Nombre del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Pedro"
+                    },
+                    "last_name": {
+                        "description": "Apellidos del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Guill Ferri"
+                    },
+                    "birth_date": {
+                        "description": "Data de naixement del paciente.",
+                        "type": "string",
+                        "format": "date",
+                        "example": "15-05-2002"
+                    },
+                    "address": {
+                        "description": "Direccion del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "90819 Schamberger Parkway Apt"
+                    },
+                    "city": {
+                        "description": "Ciudad del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "North Madge"
+                    },
+                    "postal_code": {
+                        "description": "Codigo postal del paciente",
+                        "type": "integer",
+                        "example": 3340
+                    },
+                    "dni": {
+                        "description": "Dni del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "36604710A"
+                    },
+                    "health_card_number": {
+                        "description": "Numero social",
+                        "type": "integer",
+                        "example": 51166090
+                    },
+                    "phone": {
+                        "description": "Numero telefonico del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "+34 615 78 7729"
+                    },
+                    "email": {
+                        "description": "Correo electronico del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "kendrick63@gleichner.net"
+                    },
+                    "zone_id": {
+                        "description": "Id de la zona en la que vive",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "description": "Id del operador",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "personal_situation": {
+                        "description": "Situacion personal del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Lorem ipsum"
+                    },
+                    "health_situation": {
+                        "description": "Situacion de vida del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Lorem ipsum"
+                    },
+                    "housing_situation": {
+                        "description": "Situacion de vivienda del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Lorem ipsum"
+                    },
+                    "personal_autonomy": {
+                        "description": "Autonomia del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Lorem ipsum"
+                    },
+                    "economic_situation": {
+                        "description": "Situacion economica del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Lorem ipsum"
+                    }
+                },
+                "type": "object"
+            },
+            "Patient": {
+                "description": "Esquema del model Patient",
+                "properties": {
+                    "name": {
+                        "description": "Nombre del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Pedro"
+                    },
+                    "last_name": {
+                        "description": "Apellidos del paciente",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Guill Ferri"
+                    },
+                    "birth_date": {
+                        "description": "Data de naixement del paciente.",
+                        "type": "string",
+                        "format": "date",
+                        "example": "15-05-2002"
+                    },
+                    "address": {
+                        "description": "Direccion del paciente",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "city": {
+                        "description": "Ciudad del paciente",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "postal_code": {
+                        "description": "Codigo postal del paciente",
+                        "type": "integer"
+                    },
+                    "dni": {
+                        "description": "Dni del paciente",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "health_card_number": {
+                        "description": "Numero social",
+                        "type": "integer"
+                    },
+                    "phone": {
+                        "description": "Numero telefonico del paciente",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "email": {
+                        "description": "Correo electronico del paciente",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "zone_id": {
+                        "description": "Id de la zona en la que vive",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "description": "Id del operador",
+                        "type": "integer"
+                    },
+                    "personal_situation": {
+                        "description": "Situacion personal del paciente",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "health_situation": {
+                        "description": "Situacion de vida del paciente",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "housing_situation": {
+                        "description": "Situacion de vivienda del paciente",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "personal_autonomy": {
+                        "description": "Autonomia del paciente",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "economic_situation": {
+                        "description": "Situacion economica del paciente",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "created_at": {
+                        "description": "Data de creació del registre",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Data d'actualització del registre",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Autenticació",
+            "description": "Autenticació"
+        },
+        {
+            "name": "Pacientes",
+            "description": "Pacientes"
+        }
+    ]
+}
