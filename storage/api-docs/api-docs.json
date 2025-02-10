@@ -347,6 +347,290 @@
                     }
                 ]
             }
+        },
+        "/api/zones/{id}/patients": {
+            "get": {
+                "tags": [
+                    "Zonas"
+                ],
+                "summary": "Muestra un paciente",
+                "operationId": "d816085ed2185c5b006608179aefcb7e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la zona",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Todos los pacientes de la zona han sido recuperados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PatientResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/zones": {
+            "get": {
+                "tags": [
+                    "Zonas"
+                ],
+                "summary": "Llista tots les zones amb paginació",
+                "operationId": "0f732fe44c20996cd9dd342f722cb156",
+                "responses": {
+                    "200": {
+                        "description": "Lista de zones",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ZoneResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "properties": {
+                                                "first": {
+                                                    "type": "string",
+                                                    "example": "http://localhost/api/zones?page=1"
+                                                },
+                                                "last": {
+                                                    "type": "string",
+                                                    "example": "http://localhost/api/zones?page=3"
+                                                },
+                                                "prev": {
+                                                    "type": "string",
+                                                    "example": "null"
+                                                },
+                                                "next": {
+                                                    "type": "string",
+                                                    "example": "http://localhost/api/zones?page=2"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "from": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                },
+                                                "path": {
+                                                    "type": "string",
+                                                    "example": "http://localhost/api/zones"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "to": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 45
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Zonas"
+                ],
+                "summary": "Crea una nueva zona",
+                "operationId": "253822acdf31d7499579454f17b7fc8b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ZoneRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Zona creado con exito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ZoneRequest"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/zones/{id}": {
+            "get": {
+                "tags": [
+                    "Zonas"
+                ],
+                "summary": "Muestra una zona",
+                "operationId": "9fbd7dbdda1909cd7ebc9bb4167293d9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la zona",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "La zona :name ha sido recuperada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ZoneResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Zonas"
+                ],
+                "summary": "Actualiza un zona",
+                "operationId": "28fa1be86dd47c22a90f9db32cdf9481",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del paciente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ZoneRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "La zona :name se ha actualizado con exito.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ZoneRequest"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Zonas"
+                ],
+                "summary": "Elimina una zona",
+                "operationId": "357ad6da21048b1eed885132d85c7c01",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del paciente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "El paciente ha sido eliminado."
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -474,6 +758,21 @@
                 },
                 "type": "object"
             },
+            "ZoneRequest": {
+                "description": "Validació per la creació y modificacio de pacients",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Nombre de la zona",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "439 Karley Loaf Suite 897"
+                    }
+                },
+                "type": "object"
+            },
             "PatientResource": {
                 "description": "Esquema del recurs Patient",
                 "properties": {
@@ -578,6 +877,18 @@
                 },
                 "type": "object"
             },
+            "ZoneResource": {
+                "description": "Esquema del recurs Zone",
+                "properties": {
+                    "name": {
+                        "description": "Nombre de la zona",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "439 Karley Loaf Suite 897"
+                    }
+                },
+                "type": "object"
+            },
             "Patient": {
                 "description": "Esquema del model Patient",
                 "properties": {
@@ -677,6 +988,28 @@
                     }
                 },
                 "type": "object"
+            },
+            "Zone": {
+                "description": "Esquema del model zone",
+                "properties": {
+                    "name": {
+                        "description": "Nombre de la zona",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "439 Karley Loaf Suite 897"
+                    },
+                    "created_at": {
+                        "description": "Data de creació del registre",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Data d'actualització del registre",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
             }
         },
         "securitySchemes": {
@@ -695,6 +1028,10 @@
         {
             "name": "Pacientes",
             "description": "Pacientes"
+        },
+        {
+            "name": "Zonas",
+            "description": "Zonas"
         }
     ]
 }

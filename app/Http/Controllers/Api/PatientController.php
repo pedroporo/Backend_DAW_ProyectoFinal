@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\PatientRequest;
 use App\Http\Resources\PatientResource;
 use App\Models\Patient;
-
+use App\Models\Zone;
 
 class PatientController extends BaseController
 {
@@ -164,5 +164,33 @@ class PatientController extends BaseController
     {
         $patient->delete();
         return $this->sendResponse(null, __('messages.patient.delete'), 201);
+    }
+    /**
+     * @OA\Get(
+     *     path="/api/zones/{id}/patients",
+     *     summary="Muestra un paciente",
+     *     tags={"Zonas"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID de la zona",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Todos los pacientes de la zona han sido recuperados",
+     *         @OA\JsonContent(ref="#/components/schemas/PatientResource")
+     *     ),
+     * @OA\Response(
+     *         response=401,
+     *         description="No has iniciado sesion."
+     *     )
+     * )
+     */
+    public function getPatientsByZone(int $zone_id)
+    {
+        return $this->sendResponse(PatientResource::collection(Patient::where('zone_id', $zone_id)->get()), 'Hola', 201);
     }
 }

@@ -59,4 +59,8 @@ class Patient extends Model
         'economic_situation'
     ];
     protected $hidden = ['created_at', 'updated_at'];
+    public function zone()
+    {
+        return $this->belongsTo(Zone::class, 'zone_id');
+    }
 }

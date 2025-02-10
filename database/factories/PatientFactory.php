@@ -28,7 +28,7 @@ class PatientFactory extends Factory
             'health_card_number' => $this->faker->numberBetween(00000000, 99999999),
             'phone' => \Faker\Provider\es_ES\PhoneNumber::mobileNumber(),
             'email' => $this->faker->email,
-            'zone_id' => $this->faker->randomNumber(),
+            'zone_id' => \App\Models\Zone::factory(),
             'user_id'=> $this->faker->randomNumber(),
             'personal_situation' => $this->faker->sentence(),
             'health_situation' => $this->faker->sentence(),

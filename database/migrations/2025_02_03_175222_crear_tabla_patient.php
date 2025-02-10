@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('health_card_number')->unique();
             $table->string('phone');
             $table->string('email');
-            $table->integer('zone_id');
+            $table->foreignId('zone_id')->constrained();
             $table->integer('user_id');
             $table->string('personal_situation');
             $table->string('health_situation');
@@ -39,6 +39,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('patients', function (Blueprint $table) {
+            $table->dropForeign(['zone_id']);
+            $table->dropColumn('zone_id');
+        });
         Schema::dropIfExists('patients');
     }
 };
