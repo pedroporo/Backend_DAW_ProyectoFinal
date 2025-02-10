@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('zones', function (Blueprint $table) {
-            //
+            $table->id()->unique();
+            $table->string('name')->unique();
         });
     }
 
@@ -21,8 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('zones', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('zones');
     }
 };
