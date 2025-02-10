@@ -183,6 +183,9 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
                     }
                 },
                 "security": [
@@ -254,6 +257,9 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
                     }
                 },
                 "security": [
@@ -290,7 +296,7 @@
                     }
                 },
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "El paciente :name se ha actualizado con exito.",
                         "content": {
                             "application/json": {
@@ -299,6 +305,9 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
                     }
                 },
                 "security": [
@@ -325,8 +334,11 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "El paciente ha sido eliminado."
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
                     }
                 },
                 "security": [

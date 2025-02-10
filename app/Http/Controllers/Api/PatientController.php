@@ -9,7 +9,7 @@ use App\Models\Patient;
 
 class PatientController extends BaseController
 {
-   /**
+    /**
      * @OA\Get(
      *     path="/api/patients",
      *     summary="Llista tots els pacients amb paginació",
@@ -38,6 +38,10 @@ class PatientController extends BaseController
      *                 @OA\Property(property="total", type="integer", example=45)
      *             )
      *         )
+     *     ),
+     * @OA\Response(
+     *         response=401,
+     *         description="No has iniciado sesion."
      *     )
      * )
      */
@@ -46,7 +50,7 @@ class PatientController extends BaseController
         return PatientResource::collection(Patient::paginate());
     }
 
-/**
+    /**
      * @OA\Post(
      *     path="/api/patients",
      *     summary="Crea un nuevo paciente",
@@ -66,9 +70,9 @@ class PatientController extends BaseController
     public function store(PatientRequest $request)
     {
         $patient = Patient::create($request->validated());
-        return $this->sendResponse($patient, __('messages.patient.create', ['name' => $patient->name]),201);
+        return $this->sendResponse($patient, __('messages.patient.create', ['name' => $patient->name]), 201);
     }
-/**
+    /**
      * @OA\Get(
      *     path="/api/patients/{id}",
      *     summary="Muestra un paciente",
@@ -85,6 +89,10 @@ class PatientController extends BaseController
      *         response=201,
      *         description="El paciente :name ha sido recumerado",
      *         @OA\JsonContent(ref="#/components/schemas/PatientResource")
+     *     ),
+     * @OA\Response(
+     *         response=401,
+     *         description="No has iniciado sesion."
      *     )
      * )
      */
@@ -93,7 +101,7 @@ class PatientController extends BaseController
     {
         return $this->sendResponse(new PatientResource($patient), __('messages.patient.get', ['name' => $patient->name]), 201);
     }
-/**
+    /**
      * @OA\Put(
      *     path="/api/patients/{id}",
      *     summary="Actualiza un paciente",
@@ -111,9 +119,13 @@ class PatientController extends BaseController
      *         @OA\JsonContent(ref="#/components/schemas/PatientRequest")
      *     ),
      *     @OA\Response(
-     *         response=204,
+     *         response=201,
      *         description="El paciente :name se ha actualizado con exito.",
      *         @OA\JsonContent(ref="#/components/schemas/PatientRequest")
+     *     ),
+     * @OA\Response(
+     *         response=401,
+     *         description="No has iniciado sesion."
      *     )
      * )
      */
@@ -124,7 +136,7 @@ class PatientController extends BaseController
         $patient->update($request->validated());
         return $this->sendResponse($patient, __('messages.patient.update', ['name' => $patient->name]), 201);
     }
-/**
+    /**
      * @OA\Delete(
      *     path="/api/patients/{id}",
      *     summary="Elimina un paciente",
@@ -140,6 +152,10 @@ class PatientController extends BaseController
      *     @OA\Response(
      *         response=201,
      *         description="El paciente ha sido eliminado."
+     *     ),
+     * @OA\Response(
+     *         response=401,
+     *         description="No has iniciado sesion."
      *     )
      * )
      */
