@@ -111,7 +111,7 @@ class PatientController extends BaseController
      *         @OA\JsonContent(ref="#/components/schemas/PatientRequest")
      *     ),
      *     @OA\Response(
-     *         response=200,
+     *         response=204,
      *         description="El paciente :name se ha actualizado con exito.",
      *         @OA\JsonContent(ref="#/components/schemas/PatientRequest")
      *     )
@@ -138,7 +138,7 @@ class PatientController extends BaseController
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
-     *         response=200,
+     *         response=201,
      *         description="El paciente ha sido eliminado."
      *     )
      * )
