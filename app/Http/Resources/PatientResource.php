@@ -28,7 +28,6 @@ class PatientResource extends JsonResource
      *     @OA\Property(property="phone", type="string", maxLength=255, description="Numero telefonico del paciente", example="+34 615 78 7729"),
      *     @OA\Property(property="email", type="string", maxLength=255, description="Correo electronico del paciente", example="kendrick63@gleichner.net"),
      *     @OA\Property(property="zone_id", type="integer", description="Id de la zona en la que vive", example=1),
-     *     @OA\Property(property="user_id", type="integer", description="Id del operador", example=1),
      *     @OA\Property(property="personal_situation", type="string", maxLength=255, description="Situacion personal del paciente", example="Lorem ipsum"),
      *     @OA\Property(property="health_situation", type="string", maxLength=255, description="Situacion de vida del paciente", example="Lorem ipsum"),
      *     @OA\Property(property="housing_situation", type="string", maxLength=255, description="Situacion de vivienda del paciente", example="Lorem ipsum"),

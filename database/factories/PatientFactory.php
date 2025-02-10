@@ -29,7 +29,6 @@ class PatientFactory extends Factory
             'phone' => \Faker\Provider\es_ES\PhoneNumber::mobileNumber(),
             'email' => $this->faker->email,
             'zone_id' => \App\Models\Zone::factory(),
-            'user_id'=> $this->faker->randomNumber(),
             'personal_situation' => $this->faker->sentence(),
             'health_situation' => $this->faker->sentence(),
             'housing_situation' => $this->faker->sentence(),

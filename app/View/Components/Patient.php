@@ -24,7 +24,6 @@ class Patient extends Component
         public string $phone,
         public string $email,
         public int    $zone_id,
-        public int    $user_id,
         public string $personal_situation,
         public string $health_situation,
         public string $housing_situation,
