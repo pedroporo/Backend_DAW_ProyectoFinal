@@ -56,9 +56,23 @@ class Patient extends Model
         'personal_autonomy',
         'economic_situation'
     ];
+
     protected $hidden = ['created_at', 'updated_at'];
     public function zone()
     {
         return $this->belongsTo(Zone::class, 'zone_id');
     }
+
+    public function contactPersons(){
+        return $this->hasMany(Contact::class);
+    }
+
+    public function calls(){
+        return $this->hasMany(Call::class);
+    }
+
+    public function alerts(){
+        return $this->hasMany(Alert::class);
+    }
+
 }
