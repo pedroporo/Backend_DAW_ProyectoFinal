@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Call;
 use Illuminate\Http\Request;
 
-class CallController extends Controller
+class CallController extends BaseController
 {
     /**
      * Display a listing of the resource.

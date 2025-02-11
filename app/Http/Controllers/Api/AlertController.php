@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Alert;
 use Illuminate\Http\Request;
 
-class AlertController extends Controller
+class AlertController extends BaseController
 {
     /**
      * Display a listing of the resource.

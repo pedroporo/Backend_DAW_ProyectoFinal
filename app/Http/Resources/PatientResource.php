@@ -50,7 +50,6 @@ class PatientResource extends JsonResource
             'phone' => $this->phone,
             'email' => $this->email,
             'zone' => new ZoneResource($this->zone),
-            'user_id' => $this->user_id,
             'personal_situation' => $this->personal_situation,
             'health_situation' => $this->health_situation,
             'housing_situation' => $this->housing_situation,

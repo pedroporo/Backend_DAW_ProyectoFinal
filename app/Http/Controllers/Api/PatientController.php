@@ -191,6 +191,6 @@ class PatientController extends BaseController
      */
     public function getPatientsByZone(int $zone_id)
     {
-        return $this->sendResponse(PatientResource::collection(Patient::where('zone_id', $zone_id)->get()), 'Hola', 201);
+        return $this->sendResponse(PatientResource::collection(Patient::where('zone_id', $zone_id)->get()), __('messages.patient.getZone'), 201);
     }
 }

@@ -62,8 +62,8 @@ class Patient extends Model
     {
         return $this->belongsTo(Zone::class, 'zone_id');
     }
-
-    public function contactPersons(){
+    public function contacts()
+    {
         return $this->hasMany(Contact::class);
     }
 

@@ -19,6 +19,10 @@ class DatabaseSeeder extends Seeder
             PatientSeeder::class,
             UsersSeeder::class,
             ZoneSeeder::class,
+            ContactSeeder::class,
+            CallSeeder::class,
+            ReportSeeder::class,
+            AlertSeeder::class,
         ]);
     }
 }

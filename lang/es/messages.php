@@ -14,5 +14,12 @@ return [
         'update' => 'La zona :name se ha actualizado con exito.',
         'delete' => 'La zona ha sido eliminado.',
     ],
+    'contact' => [
+        'crate' => 'El contacto :first_name ha sido creado.',
+        'get' => 'El contacto :first_name ha sido recuperado.',
+        'update' => 'El contacto :first_name se ha actualizado con exito.',
+        'delete' => 'La zona ha sido eliminado.',
+        'getContByPa' => 'Todos los contactos relacionados con ese paciente han sido recuperados.',
+    ],
 
 ];
