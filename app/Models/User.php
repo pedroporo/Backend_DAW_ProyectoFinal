@@ -53,4 +53,9 @@ class User extends Authenticatable
     protected function calls(){
         return $this->hasMany(Call::class);
     }
+
+    public function zones(){
+        return $this->hasMany(Zone::class);
+    }
+    
 }
