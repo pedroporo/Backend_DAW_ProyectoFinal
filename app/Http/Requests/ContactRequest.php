@@ -7,8 +7,23 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ContactRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
+     /**
+     * @OA\Schema(
+     *     schema="PatientRequest",
+     *     description="Validació per la creació y modificacio de contacts",
+     *     required={
+     *               "first_name", 
+     *               "last_name",
+     *               "phone",
+     *               "patient_id",
+     *               "relationship"
+     *               },
+     *     @OA\Property(property="first_name", type="string", maxLength=255, description="Nombre del contacto", example="Pedro"),
+     *     @OA\Property(property="last_name", type="string", maxLength=255, description="Apellidos del contacto", example="Guill Ferri"),
+     *     @OA\Property(property="phone", type="string", maxLength=255, description="Numero telefonico del contacto"),
+     *     @OA\Property(property="patient_id", type="integer", description="Id del paciente"),
+     *     @OA\Property(property="relationship", type="string", maxLength=255, description="Relacion personal con el paciente")
+     * )
      */
     public function authorize(): bool
     {

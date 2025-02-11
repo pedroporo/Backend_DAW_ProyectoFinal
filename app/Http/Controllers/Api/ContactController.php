@@ -10,8 +10,41 @@ use Illuminate\Http\Request;
 
 class ContactController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
+     /**
+     * @OA\Get(
+     *     path="/api/contacts",
+     *     summary="Llista tots els pacients amb paginació",
+     *     tags={"Contactos"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de contactos",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="array",
+     *                 @OA\Items(ref="#/components/schemas/ContactResource")
+     *             ),
+     *             @OA\Property(property="links", type="object",
+     *                 @OA\Property(property="first", type="string", example="http://localhost/api/contacts?page=1"),
+     *                 @OA\Property(property="last", type="string", example="http://localhost/api/contacts?page=3"),
+     *                 @OA\Property(property="prev", type="string", example="null"),
+     *                 @OA\Property(property="next", type="string", example="http://localhost/api/contacts?page=2")
+     *             ),
+     *             @OA\Property(property="meta", type="object",
+     *                 @OA\Property(property="current_page", type="integer", example=1),
+     *                 @OA\Property(property="from", type="integer", example=1),
+     *                 @OA\Property(property="last_page", type="integer", example=3),
+     *                 @OA\Property(property="path", type="string", example="http://localhost/api/contacts"),
+     *                 @OA\Property(property="per_page", type="integer", example=15),
+     *                 @OA\Property(property="to", type="integer", example=15),
+     *                 @OA\Property(property="total", type="integer", example=45)
+     *             )
+     *         )
+     *     ),
+     * @OA\Response(
+     *         response=401,
+     *         description="No has iniciado sesion."
+     *     )
+     * )
      */
     public function index()
     {
@@ -19,7 +52,25 @@ class ContactController extends BaseController
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/contacts",
+     *     summary="Crea un nuevo contacto",
+     *     tags={"Contactos"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/ContactRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Contacto creado con exito",
+     *         @OA\JsonContent(ref="#/components/schemas/ContactRequest")
+     *     ),
+     * @OA\Response(
+     *         response=401,
+     *         description="No has iniciado sesion."
+     *     )
+     * )
      */
     public function store(ContactRequest $request,int $patient_id)
     {
@@ -29,7 +80,28 @@ class ContactController extends BaseController
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/contacts/{id}",
+     *     summary="Muestra un contacto",
+     *     tags={"Contactos"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID del contacto",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="El contacto :first_name ha sido recumerado",
+     *         @OA\JsonContent(ref="#/components/schemas/ContactResource")
+     *     ),
+     * @OA\Response(
+     *         response=401,
+     *         description="No has iniciado sesion."
+     *     )
+     * )
      */
     public function show(Contact $contact)
     {
@@ -37,7 +109,32 @@ class ContactController extends BaseController
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/contacts/{id}",
+     *     summary="Actualiza un contacto",
+     *     tags={"Contactos"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID del contacto",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/ContactRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="El contacto :name se ha actualizado con exito.",
+     *         @OA\JsonContent(ref="#/components/schemas/ContactRequest")
+     *     ),
+     * @OA\Response(
+     *         response=401,
+     *         description="No has iniciado sesion."
+     *     )
+     * )
      */
     public function update(ContactRequest $request, Contact $contact)
     {
@@ -46,17 +143,38 @@ class ContactController extends BaseController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/contacts/{id}",
+     *     summary="Elimina un contacto",
+     *     tags={"Contactos"},
+     *     security={{"bearerAuth":{}}}, 
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID del contacto",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="El contacto ha sido eliminado."
+     *     ),
+     * @OA\Response(
+     *         response=401,
+     *         description="No has iniciado sesion."
+     *     )
+     * )
      */
     public function destroy(Contact $contact)
     {
-        //
+        $contact->delete();
+        return $this->sendResponse(null, __('messages.contact.delete'), 201);
     }
     /**
      * @OA\Get(
      *     path="/api/patients/{id}/contacts",
      *     summary="Muestra todos los contactos de un paciente",
-     *     tags={"Zonas"},
+     *     tags={"Contactos"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
@@ -67,8 +185,8 @@ class ContactController extends BaseController
      *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Todos los pacientes de la zona han sido recuperados",
-     *         @OA\JsonContent(ref="#/components/schemas/PatientResource")
+     *         description="Todos los contactos relacionados con ese paciente han sido recuperados.",
+     *         @OA\JsonContent(ref="#/components/schemas/ContactResource")
      *     ),
      * @OA\Response(
      *         response=401,
