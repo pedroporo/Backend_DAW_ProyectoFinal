@@ -17,7 +17,11 @@ class ContactFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'phone' => \Faker\Provider\es_ES\PhoneNumber::mobileNumber(),
+            'patient_id' => \App\Models\Patient::factory(),
+            'relationship' => $this->faker->sentence(),
         ];
     }
 }

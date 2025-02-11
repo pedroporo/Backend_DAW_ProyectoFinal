@@ -11,9 +11,14 @@ class Contact extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(
+        public string $first_name,
+        public string $last_name,
+        public string $phone,
+        public int    $patient_id,
+        public ?string $relationship
+    )
     {
-        //
     }
 
     /**
