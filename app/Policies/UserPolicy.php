@@ -2,11 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Alert;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class AlertPolicy
+class UserPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +18,7 @@ class AlertPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Alert $alert): bool
+    public function view(User $user, User $model): bool
     {
         return true;
     }
@@ -29,38 +28,38 @@ class AlertPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->role === 'administrador';
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Alert $alert): bool
+    public function update(User $user, User $model): bool
     {
-        return true;
+        return $user->role === 'administrador';
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Alert $alert): bool
+    public function delete(User $user, User $model): bool
     {
-        return true;
+        return $user->role === 'administrador';
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Alert $alert): bool
+    public function restore(User $user, User $model): bool
     {
-        return true;
+        return $user->role === 'administrador';
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Alert $alert): bool
+    public function forceDelete(User $user, User $model): bool
     {
-        return true;
+        return $user->role === 'administrador';
     }
 }

@@ -9,7 +9,7 @@ class ContactRequest extends FormRequest
 {
      /**
      * @OA\Schema(
-     *     schema="PatientRequest",
+     *     schema="ContactRequest",
      *     description="Validació per la creació y modificacio de contacts",
      *     required={
      *               "first_name", 

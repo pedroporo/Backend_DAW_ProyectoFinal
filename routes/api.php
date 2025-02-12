@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\AlertController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\OperatorController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\ZoneController;
@@ -20,9 +22,11 @@ Route::middleware(['auth:sanctum', 'api'])->group(function () {
     Route::post('/patients/{id}/contacts', [ContactController::class, 'store'])->middleware('api');
     Route::get('/patients/{id}/contacts', [ContactController::class, 'getContactsByPatiente'])->middleware('api');
     Route::get('/zones/{id}/patients', [PatientController::class, 'getPatientsByZone'])->middleware('api');
-    Route::apiResource('zones', PatientController::class);
-    Route::get('/zones/{id}/patients', [PatientController::class, 'getPatientsByZone']);
-    
+    Route::get('/zones/{id}/operators', [ZoneController::class, 'getOperators'])->middleware('api');
+    Route::apiResource('user', OperatorController::class)->middleware('api');
+    Route::post('/user', [OperatorController::class, 'addZone'])->middleware('api');
+    Route::post('/user/delZone', [OperatorController::class, 'delZone'])->middleware('api');
+    Route::apiResource('alerts', AlertController::class)->middleware('api');
     // Rutas de Informes 
     Route::get('reports/emergencies',[ReportController::class, 'getEmergencies' ]);
     Route::get('reports/patients', [ReportController::class, 'getPatients']);
@@ -34,3 +38,4 @@ Route::middleware(['auth:sanctum', 'api'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 });
 //Route::apiResource('patients', PatientController::class)->middleware('api');
+//Route::get('/test', [OperatorController::class, 'show']);

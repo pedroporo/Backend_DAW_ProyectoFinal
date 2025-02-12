@@ -6,7 +6,7 @@ use App\Http\Requests\PatientRequest;
 use App\Http\Resources\PatientResource;
 use App\Models\Patient;
 use App\Models\Zone;
-
+use Illuminate\Http\Request;
 class PatientController extends BaseController
 {
     /**
@@ -45,8 +45,16 @@ class PatientController extends BaseController
      *     )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
+        $patient_query=Patient::query();
+        $parameters=$request->query->all();
+        if (count($parameters)>0) {
+            foreach ($parameters as $key => $value) {
+                $patient_query->where($key,$value);
+            }
+            return PatientResource::collection($patient_query->paginate());
+        }
         return PatientResource::collection(Patient::paginate());
     }
 
