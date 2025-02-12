@@ -11,6 +11,7 @@ use App\Models\Zone;
 use App\Models\Patient;
 use App\Models\User;
 use App\Enums\Alarms_type;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReportController extends Controller
 {
@@ -121,19 +122,18 @@ class ReportController extends Controller
      */
     public function getPatients()
     {
-        $user = Auth::user();
+        //Recoger los pacientes que tenga asignado
+        // el teleoperador y ordenarlos por apellido
 
-        $zoneIds = $user->zones()->pluck('zones.id');
-
-        if ($zoneIds->isEmpty) {
-            return response()->json(['error' => 'No tienes zonas asignadas'], 401);
-        }
-
-        $patients = Patient::whereIn('zone_id', $zoneIds)
-            ->orderBy('last_name', 'asc') // Ordenar por apellidos
-            ->get();
-
+        $patients = Patient::all();
         return response()->json($patients);
+
+    }
+
+    public function getPatientsPDF(){
+        $patients = Patient::orderBy('last_name', 'asc')->get();
+        $pdf = Pdf::loadView('pdf.patients', ['patients' => $patients]);
+        return $pdf->download('patients_list.pdf');
     }
 
 
