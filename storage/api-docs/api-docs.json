@@ -6,6 +6,250 @@
     },
     "paths": {
         "/api": {},
+        "/api/alerts": {
+            "get": {
+                "tags": [
+                    "Alertas"
+                ],
+                "summary": "Llista tots els alertes amb paginació",
+                "operationId": "4478ffd7354aa9ca6132fb9e74bdde0b",
+                "responses": {
+                    "200": {
+                        "description": "Lista de alerts",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/AlertResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "properties": {
+                                                "first": {
+                                                    "type": "string",
+                                                    "example": "http://localhost/api/alerts?page=1"
+                                                },
+                                                "last": {
+                                                    "type": "string",
+                                                    "example": "http://localhost/api/alerts?page=3"
+                                                },
+                                                "prev": {
+                                                    "type": "string",
+                                                    "example": "null"
+                                                },
+                                                "next": {
+                                                    "type": "string",
+                                                    "example": "http://localhost/api/alerts?page=2"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "from": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                },
+                                                "path": {
+                                                    "type": "string",
+                                                    "example": "http://localhost/api/alerts"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "to": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 45
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Alertas"
+                ],
+                "summary": "Crea una nueva alerta",
+                "operationId": "42b5297a4f4f281e294bf8339a0a80d8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AlertRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Alerta creada con exito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AlertRequest"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/alerts/{id}": {
+            "get": {
+                "tags": [
+                    "Alertas"
+                ],
+                "summary": "Muestra una alerta",
+                "operationId": "48e65a8f03a14c0b36563c5284e726a3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la alerta",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "La alerta ha sido recuperada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AlertResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Alertas"
+                ],
+                "summary": "Actualiza un alerta",
+                "operationId": "037adc62bb0d80e7c7a153cf2445e337",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la alerta",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AlertRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "La alerta se ha actualizado con exito.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AlertRequest"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Alertas"
+                ],
+                "summary": "Elimina un alerta",
+                "operationId": "6dea41ff5a0bbf10775b84b2275d50e0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del alerta",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "La alerta ha sido eliminada."
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/login": {
             "post": {
                 "tags": [
@@ -102,6 +346,293 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/contacts": {
+            "get": {
+                "tags": [
+                    "Contactos"
+                ],
+                "summary": "Llista tots els pacients amb paginació",
+                "operationId": "bc39494d59500e2d75e6f6648b43c8de",
+                "responses": {
+                    "200": {
+                        "description": "Lista de contactos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ContactResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "properties": {
+                                                "first": {
+                                                    "type": "string",
+                                                    "example": "http://localhost/api/contacts?page=1"
+                                                },
+                                                "last": {
+                                                    "type": "string",
+                                                    "example": "http://localhost/api/contacts?page=3"
+                                                },
+                                                "prev": {
+                                                    "type": "string",
+                                                    "example": "null"
+                                                },
+                                                "next": {
+                                                    "type": "string",
+                                                    "example": "http://localhost/api/contacts?page=2"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "from": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                },
+                                                "path": {
+                                                    "type": "string",
+                                                    "example": "http://localhost/api/contacts"
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "to": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 45
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Contactos"
+                ],
+                "summary": "Crea un nuevo contacto",
+                "operationId": "779a1f2268bae1138e7ea7843dd88d90",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContactRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Contacto creado con exito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactRequest"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/contacts/{id}": {
+            "get": {
+                "tags": [
+                    "Contactos"
+                ],
+                "summary": "Muestra un contacto",
+                "operationId": "2a2c193f37e667891b7a6bc95e8e4132",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del contacto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "El contacto :first_name ha sido recumerado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Contactos"
+                ],
+                "summary": "Actualiza un contacto",
+                "operationId": "45636eb97c78bd0e474d5507fde18f1a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del contacto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContactRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "El contacto :name se ha actualizado con exito.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactRequest"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Contactos"
+                ],
+                "summary": "Elimina un contacto",
+                "operationId": "a4fa6d0e82512d1fac868a7b61e6a2e7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del contacto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "El contacto ha sido eliminado."
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/patients/{id}/contacts": {
+            "get": {
+                "tags": [
+                    "Contactos"
+                ],
+                "summary": "Muestra todos los contactos de un paciente",
+                "operationId": "502387bfa22df85c2d6e5195d9f9b6fd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del paciente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Todos los contactos relacionados con ese paciente han sido recuperados.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContactResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No has iniciado sesion."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/patients": {
@@ -635,6 +1166,91 @@
     },
     "components": {
         "schemas": {
+            "AlertRequest": {
+                "description": "Validació per la creació y modificacio de contacts",
+                "required": [
+                    "zone_id",
+                    "type",
+                    "phone",
+                    "start_date",
+                    "end_date"
+                ],
+                "properties": {
+                    "start_date": {
+                        "description": "Data de inicio de la alarma.",
+                        "type": "string",
+                        "format": "date",
+                        "example": "15-05-2002"
+                    },
+                    "end_date": {
+                        "description": "Data de finalizacion de la alarma.",
+                        "type": "string",
+                        "format": "date",
+                        "example": "15-05-2002"
+                    },
+                    "zone_id": {
+                        "description": "Id de la zona",
+                        "type": "integer"
+                    },
+                    "type": {
+                        "description": "Tipos permitidos",
+                        "type": "string",
+                        "enum": [
+                            "medication",
+                            "special_alert",
+                            "emergency_followup",
+                            "bereavement",
+                            "hospital_discharge",
+                            "absence_suspension",
+                            "return_from_absence"
+                        ]
+                    },
+                    "description": {
+                        "description": "Descripcion de la alarma",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ContactRequest": {
+                "description": "Validació per la creació y modificacio de contacts",
+                "required": [
+                    "first_name",
+                    "last_name",
+                    "phone",
+                    "patient_id",
+                    "relationship"
+                ],
+                "properties": {
+                    "first_name": {
+                        "description": "Nombre del contacto",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Pedro"
+                    },
+                    "last_name": {
+                        "description": "Apellidos del contacto",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Guill Ferri"
+                    },
+                    "phone": {
+                        "description": "Numero telefonico del contacto",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "patient_id": {
+                        "description": "Id del paciente",
+                        "type": "integer"
+                    },
+                    "relationship": {
+                        "description": "Relacion personal con el paciente",
+                        "type": "string",
+                        "maxLength": 255
+                    }
+                },
+                "type": "object"
+            },
             "PatientRequest": {
                 "description": "Validació per la creació y modificacio de pacients",
                 "required": [
@@ -649,7 +1265,6 @@
                     "phone",
                     "email",
                     "zone_id",
-                    "user_id",
                     "personal_situation",
                     "health_situation",
                     "housing_situation",
@@ -720,11 +1335,6 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "user_id": {
-                        "description": "Id del operador",
-                        "type": "integer",
-                        "example": 1
-                    },
                     "personal_situation": {
                         "description": "Situacion personal del paciente",
                         "type": "string",
@@ -759,7 +1369,7 @@
                 "type": "object"
             },
             "ZoneRequest": {
-                "description": "Validació per la creació y modificacio de pacients",
+                "description": "Validació per la creació y modificacio de zones",
                 "required": [
                     "name"
                 ],
@@ -769,6 +1379,77 @@
                         "type": "string",
                         "maxLength": 255,
                         "example": "439 Karley Loaf Suite 897"
+                    }
+                },
+                "type": "object"
+            },
+            "AlertResource": {
+                "description": "Esquema del recurs Alert",
+                "properties": {
+                    "start_date": {
+                        "description": "Data de inicio de la alarma.",
+                        "type": "string",
+                        "format": "date",
+                        "example": "15-05-2002"
+                    },
+                    "end_date": {
+                        "description": "Data de finalizacion de la alarma.",
+                        "type": "string",
+                        "format": "date",
+                        "example": "15-05-2002"
+                    },
+                    "zone_id": {
+                        "description": "Id de la zona",
+                        "type": "integer"
+                    },
+                    "type": {
+                        "description": "Tipos permitidos",
+                        "type": "string",
+                        "enum": [
+                            "medication",
+                            "special_alert",
+                            "emergency_followup",
+                            "bereavement",
+                            "hospital_discharge",
+                            "absence_suspension",
+                            "return_from_absence"
+                        ]
+                    },
+                    "description": {
+                        "description": "Descripcion de la alarma",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "ContactResource": {
+                "description": "Esquema del recurs Contact",
+                "properties": {
+                    "first_name": {
+                        "description": "Nombre del contacto",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Pedro"
+                    },
+                    "last_name": {
+                        "description": "Apellidos del contacto",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Guill Ferri"
+                    },
+                    "phone": {
+                        "description": "Numero telefonico del contacto",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "patient_id": {
+                        "description": "Id del paciente",
+                        "type": "integer"
+                    },
+                    "relationship": {
+                        "description": "Relacion personal con el paciente",
+                        "type": "string",
+                        "maxLength": 255
                     }
                 },
                 "type": "object"
@@ -839,11 +1520,6 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "user_id": {
-                        "description": "Id del operador",
-                        "type": "integer",
-                        "example": 1
-                    },
                     "personal_situation": {
                         "description": "Situacion personal del paciente",
                         "type": "string",
@@ -885,6 +1561,77 @@
                         "type": "string",
                         "maxLength": 255,
                         "example": "439 Karley Loaf Suite 897"
+                    }
+                },
+                "type": "object"
+            },
+            "Alert": {
+                "description": "Esquema del model Alert",
+                "properties": {
+                    "start_date": {
+                        "description": "Data de inicio de la alarma.",
+                        "type": "string",
+                        "format": "date",
+                        "example": "15-05-2002"
+                    },
+                    "end_date": {
+                        "description": "Data de finalizacion de la alarma.",
+                        "type": "string",
+                        "format": "date",
+                        "example": "15-05-2002"
+                    },
+                    "zone_id": {
+                        "description": "Id de la zona",
+                        "type": "integer"
+                    },
+                    "type": {
+                        "description": "Tipos permitidos",
+                        "type": "string",
+                        "enum": [
+                            "medication",
+                            "special_alert",
+                            "emergency_followup",
+                            "bereavement",
+                            "hospital_discharge",
+                            "absence_suspension",
+                            "return_from_absence"
+                        ]
+                    },
+                    "description": {
+                        "description": "Descripcion de la alarma",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Contact": {
+                "description": "Esquema del model Contact",
+                "properties": {
+                    "first_name": {
+                        "description": "Nombre del contacto",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Pedro"
+                    },
+                    "last_name": {
+                        "description": "Apellidos del contacto",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Guill Ferri"
+                    },
+                    "phone": {
+                        "description": "Numero telefonico del contacto",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "patient_id": {
+                        "description": "Id del paciente",
+                        "type": "integer"
+                    },
+                    "relationship": {
+                        "description": "Relacion personal con el paciente",
+                        "type": "string",
+                        "maxLength": 255
                     }
                 },
                 "type": "object"
@@ -945,10 +1692,6 @@
                     },
                     "zone_id": {
                         "description": "Id de la zona en la que vive",
-                        "type": "integer"
-                    },
-                    "user_id": {
-                        "description": "Id del operador",
                         "type": "integer"
                     },
                     "personal_situation": {
@@ -1022,8 +1765,16 @@
     },
     "tags": [
         {
+            "name": "Alertas",
+            "description": "Alertas"
+        },
+        {
             "name": "Autenticació",
             "description": "Autenticació"
+        },
+        {
+            "name": "Contactos",
+            "description": "Contactos"
         },
         {
             "name": "Pacientes",

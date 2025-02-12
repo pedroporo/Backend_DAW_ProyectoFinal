@@ -131,9 +131,11 @@ class ReportController extends Controller
     }
 
     public function getPatientsPDF(){
+
         $patients = Patient::orderBy('last_name', 'asc')->get();
         $pdf = Pdf::loadView('pdf.patients', ['patients' => $patients]);
         return $pdf->download('patients_list.pdf');
+   
     }
 
 

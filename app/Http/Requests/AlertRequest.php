@@ -2,16 +2,50 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Alarms_type;
+use App\Models\Alert;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AlertRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
+   /**
+     * @OA\Schema(
+     *     schema="AlertRequest",
+     *     description="Validació per la creació y modificacio de contacts",
+     *     required={
+     *               "zone_id", 
+     *               "type",
+     *               "phone",
+     *               "start_date",
+     *               "end_date"
+     *               },
+    *     @OA\Property(
+     *         property="start_date",
+     *         type="date",
+     *         format="date",
+     *         description="Data de inicio de la alarma.",
+     *         example="15-05-2002"
+     *     ),
+     *     @OA\Property(
+     *         property="end_date",
+     *         type="date",
+     *         format="date",
+     *         description="Data de finalizacion de la alarma.",
+     *         example="15-05-2002"
+     *     ),
+     *     @OA\Property(property="zone_id", type="integer", description="Id de la zona"),
+     *     @OA\Property(property="type", type="string", description="Tipos permitidos",enum={\App\Enums\Alarms_type::class}),
+     *     @OA\Property(property="description", type="string", description="Descripcion de la alarma")
+     * 
+     * )
      */
     public function authorize(): bool
     {
-        return false;
+        if ($this->user()->can('create', Alert::class) || $this->user()->can('update', Alert::class)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -22,7 +56,10 @@ class AlertRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'zone_id' => 'required',
+            'type' => 'required|in:' . array_column(Alarms_type::cases(), 'name'),
+            'start_date' => 'required|date|date_format:d-m-Y',
+            'end_date' => 'required|date|date_format:d-m-Y'
         ];
     }
 }

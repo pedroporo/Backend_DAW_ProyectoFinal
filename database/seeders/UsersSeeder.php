@@ -20,6 +20,7 @@ class UsersSeeder extends Seeder
             'email' => 'admin@example.com',
             'password' => Hash::make('1234'),
             'role' => 'administrador',
+            'phone' => \Faker\Provider\es_ES\PhoneNumber::mobileNumber(),
         ]);
 
         for ($i = 1; $i <= 30; $i++) {
@@ -29,6 +30,7 @@ class UsersSeeder extends Seeder
                 'email' => str_replace([' ', ',', '.'], '', $name) . '@operador.com',
                 'password' => Hash::make('1234'),
                 'role' => 'operador',
+                'phone' => \Faker\Provider\es_ES\PhoneNumber::mobileNumber(),
             ]);
         }
     }

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\ZoneRequest;
+use App\Http\Resources\UserResource;
 use App\Http\Resources\ZoneResource;
+use App\Models\User;
 use App\Models\Zone;
-
+use Illuminate\Support\Facades\DB;
 class ZoneController extends BaseController
 {
     /**
@@ -162,5 +164,13 @@ class ZoneController extends BaseController
     {
         $zone->delete();
         return $this->sendResponse(null, __('messages.zone.delete'), 201);
+    }
+    public function getOperators(int $zone_id){
+        //dd(DB::table('users_zones')->where('zone_id', $zone_id)->get());
+        //dd(DB::table('users_zones')->where('zone_id', $zone_id)->get()->pluck('user_id'));
+        //dd(User::whereIn('id',DB::table('users_zones')->where('zone_id', $zone_id)->get()->pluck('user_id'))->get());
+        //dd(UserResource::collection(DB::table('users_zones')->where('zone_id', $zone_id)->get()));
+        //dd(UserResource::collection(User::from('users_zones')->where('zone_id', $zone_id)->get()));
+        return $this->sendResponse(UserResource::collection(User::whereIn('id',DB::table('users_zones')->where('zone_id', $zone_id)->get()->pluck('user_id'))->get()), __('messages.zone.getOperators'), 201);
     }
 }
