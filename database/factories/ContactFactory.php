@@ -20,7 +20,7 @@ class ContactFactory extends Factory
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'phone' => \Faker\Provider\es_ES\PhoneNumber::mobileNumber(),
-            'patient_id' => \App\Models\Patient::factory(),
+            'patient_id' => \App\Models\Patient::all()->random()->id,
             'relationship' => $this->faker->sentence(),
         ];
     }
