@@ -39,7 +39,7 @@ jobs:
         SOURCE: "."
         REMOTE_HOST: ${{ secrets.HOST }}
         REMOTE_USER: ${{ secrets.USER }}
-        TARGET: "/var/www/html/api"
+        TARGET: "/var/www/api"
 
     - name: Run Remote/Artisan Commands
       uses: appleboy/ssh-action@v0.1.6
@@ -48,7 +48,7 @@ jobs:
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd /var/www/html/api
+          cd /var/www/api
           php artisan migrate --force
           php artisan optimize
     
