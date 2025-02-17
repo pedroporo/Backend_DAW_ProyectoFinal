@@ -1,0 +1,57 @@
+name: Deploy la api
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+
+  deploy:
+    name: Subir la api al server
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Pillar Codigo
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.4
+
+    - name: Instalar dependencias de composer
+      run: composer install --optimize-autoloader --no-dev --no-progress --no-interaction --prefer-dist
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+    - name: Instalar dependencias de npm
+      run: npm install
+    - name: Buil archivos npm
+      run: npm run build
+    - name: Synchronize Files To Server
+      uses: easingthemes/ssh-deploy@main
+      with:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SOURCE: "."
+        REMOTE_HOST: ${{ secrets.HOST }}
+        REMOTE_USER: ${{ secrets.USER }}
+        TARGET: "/var/www/api"
+
+    - name: Run Remote/Artisan Commands
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/api
+          php artisan migrate --force
+          php artisan optimize
+    
+
+
+    
