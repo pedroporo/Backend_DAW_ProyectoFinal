@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('calls', function (Blueprint $table) {
+        Schema::create('incoming_calls', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('timestamp');
             $table->foreignId('patient_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->enum('type', ['social_emergency', 'medical_emergency', 'loneliness_crisis', 'unanswered_alarm', 'absence_notification', 'data_update', 'accidental', 'info_request', 'complaint', 'social_call', 'medical_appointment', 'other']);
             $table->text('description');
+            $table->timestamp('timestamp');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('calls');
+        Schema::dropIfExists('incoming_calls');
     }
 };

@@ -17,7 +17,7 @@
         <h2>Informe Lista de Pacientes</h2>
         <p>Fecha: {{ date('d-m-Y') }}</p>
     </div>
-    <p><strong>Teleoperador:</strong> Desconocido</p>
+    <p><strong>Teleoperador:</strong> {{ $operatorName }}</p>
 
     <table>
         <thead>
@@ -43,4 +43,3 @@
     </table>
 </body>
 </html>
- 

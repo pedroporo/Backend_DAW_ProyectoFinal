@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             CallSeeder::class,
             ReportSeeder::class,
             AlertSeeder::class,
+            UserZoneSeeder::class
         ]);
     }
 }

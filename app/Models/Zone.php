@@ -23,7 +23,7 @@ class Zone extends Model
     protected $hidden = ['created_at', 'updated_at'];
 
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class, 'users_zones', 'zone_id', 'user_id');
     }
 
     public function patients(){

@@ -15,7 +15,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReportController extends Controller
 {
- 
+
     //Listar emergencias asignades al teleoperador
 
     /**
@@ -83,27 +83,27 @@ class ReportController extends Controller
      * )
      */
     public function getEmergencyActionsByZone($zoneId)
-{
-    $user = Auth::user();
+    {
+        $user = Auth::user();
 
-    $zoneIds = $user->zones()->pluck('zones.id');
-    if (!$zoneIds->contains($zoneId)) {
-        return response()->json(['error' => 'Zona no autoritzada'], 403);
+        $zoneIds = $user->zones()->pluck('zones.id');
+        if (!$zoneIds->contains($zoneId)) {
+            return response()->json(['error' => 'Zona no autoritzada'], 403);
+        }
+
+        $emergencyTypes = ['social_emergency', 'medical_emergency', 'loneliness_crisis', 'unanswered_alarm'];
+
+        $emergencyCalls = Call::whereIn('incoming_calls_type_enum', $emergencyTypes)
+            ->whereHas('patient', function ($query) use ($zoneId) {
+                $query->where('zone_id', $zoneId);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json($emergencyCalls);
     }
 
-    $emergencyTypes = ['social_emergency', 'medical_emergency', 'loneliness_crisis', 'unanswered_alarm'];
-
-    $emergencyCalls = Call::whereIn('incoming_calls_type_enum', $emergencyTypes)
-        ->whereHas('patient', function ($query) use ($zoneId) {
-            $query->where('zone_id', $zoneId);
-        })
-        ->orderBy('created_at', 'desc')
-        ->get();
-
-    return response()->json($emergencyCalls);
-}
-
-     /**
+    /**
      * @OA\Get(
      *     path="/api/patients",
      *     summary="List patients assigned to the operator's zones",
@@ -125,21 +125,40 @@ class ReportController extends Controller
         //Recoger los pacientes que tenga asignado
         // el teleoperador y ordenarlos por apellido
 
-        $patients = Patient::all();
+        // Obtener el usuario autenticado (asumiendo que usas autenticación con Laravel)
+
+        // Obtener las zonas asociadas al usuario con ID 9 cambiar a $user = auth()->user(); esto es solo de prueba
+        $user = \App\Models\User::find(9);
+        $zonesIds = $user->zones()->pluck('zones.id'); // Obtiene los IDs de las zonas
+
+        // Obtener los pacientes que estén en las zonas asociadas al usuario
+        $patients = \App\Models\Patient::whereIn('zone_id', $zonesIds)->orderBy('last_name', 'asc')->get();
+
         return response()->json($patients);
-
     }
 
-    public function getPatientsPDF(){
-
-        $patients = Patient::orderBy('last_name', 'asc')->get();
-        $pdf = Pdf::loadView('pdf.patients', ['patients' => $patients]);
+    public function getPatientsPDF()
+    {
+        // Obtener las zonas asociadas al usuario con ID 9
+        $user = User::find(9);
+        $zonesIds = $user->zones()->pluck('zones.id'); // Obtiene los IDs de las zonas asociadas al usuario
+    
+        // Obtener los pacientes que estén en las zonas asociadas al usuario
+        $patients = Patient::whereIn('zone_id', $zonesIds)->orderBy('last_name', 'asc')->get();
+    
+        // Pasar el nombre del teleoperador a la vista
+        $operatorName = $user->name; // O el campo que almacene el nombre del teleoperador
+    
+        // Cargar la vista y generar el PDF
+        $pdf = Pdf::loadView('pdf.patients', ['patients' => $patients, 'operatorName' => $operatorName]);
+    
+        // Devolver el PDF como descarga
         return $pdf->download('patients_list.pdf');
-   
     }
+    
 
 
-     /**
+    /**
      * @OA\Get(
      *     path="/api/scheduled-calls",
      *     summary="List scheduled calls for a specific date",
@@ -238,33 +257,30 @@ class ReportController extends Controller
         return response()->json($callHistory);
     }
 
-    public function getCallHistoryByPatientAndType($patientId, Request $request){
-    $user = Auth::user();
-    $zoneIds = $user->zones()->pluck('zones.id');
+    public function getCallHistoryByPatientAndType($patientId, Request $request)
+    {
+        $user = Auth::user();
+        $zoneIds = $user->zones()->pluck('zones.id');
 
-    // Ensure the patient is within the user's zones
-    $patient = Patient::where('id', $patientId)
-        ->whereIn('zone_id', $zoneIds)
-        ->first();
+        // Ensure the patient is within the user's zones
+        $patient = Patient::where('id', $patientId)
+            ->whereIn('zone_id', $zoneIds)
+            ->first();
 
-    if (!$patient) {
-        return response()->json(['error' => 'Aquest pacient no està en les teves zones'], 403);
+        if (!$patient) {
+            return response()->json(['error' => 'Aquest pacient no està en les teves zones'], 403);
+        }
+
+        $callType = $request->query('call_type'); // Call type filter
+
+        $query = Call::where('patient_id', $patientId);
+
+        if ($callType) {
+            $query->where('incoming_calls_type_enum', $callType);
+        }
+
+        $callHistory = $query->orderBy('created_at', 'desc')->get();
+
+        return response()->json($callHistory);
     }
-
-    $callType = $request->query('call_type'); // Call type filter
-
-    $query = Call::where('patient_id', $patientId);
-
-    if ($callType) {
-        $query->where('incoming_calls_type_enum', $callType);
-    }
-
-    $callHistory = $query->orderBy('created_at', 'desc')->get();
-
-    return response()->json($callHistory);
 }
-
-}
-
-
-
