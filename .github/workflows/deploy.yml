@@ -37,6 +37,8 @@ jobs:
       with:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+    - name: Test
+      run: ssh ${{ secrets.USER }}@${{ secrets.HOST }} -p ${{ secrets.PORT }}
     - name: Adding Known Hosts
       env:
         REMOTE_HOST: ${{ secrets.HOST }}
