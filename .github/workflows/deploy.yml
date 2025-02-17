@@ -40,7 +40,7 @@ jobs:
     - name: Adding Known Hosts
       env:
         REMOTE_HOST: ${{ secrets.HOST }}
-      run: ssh-keyscan -H $REMOTE_HOST >> /root/.ssh/known_hosts
+      run: ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
     - name: Deploy
       uses: deployphp/action@master
       with:
