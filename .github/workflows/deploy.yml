@@ -32,19 +32,7 @@ jobs:
       run: npm install
     - name: Buil archivos npm
       run: npm run build
-    - name: Run Remote/Artisan Commands
-      uses: appleboy/ssh-action@v0.1.6
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: ${{ secrets.PORT }}
-        script: |
-          exit
-    - name: Adding Known Hosts
-      env:
-        REMOTE_HOST: ${{ secrets.HOST }}
-      run: ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
+      
     - name: Deploy
       uses: deployphp/action@master
       with:
