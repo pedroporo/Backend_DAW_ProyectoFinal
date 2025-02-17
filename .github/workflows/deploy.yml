@@ -21,10 +21,10 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: 8.4
-        extensions: mbstring,xmlrpc,soap,gd,xml,curl,zip,cli,bcmath,tokenizer,json,pear,mysql
+        extensions: mbstring,xmlrpc,soap,gd,xml,curl,zip,bcmath,tokenizer,json,mysql
 
     - name: Instalar dependencias de composer
-      run: composer install --optimize-autoloader --no-dev --no-progress --no-interaction --prefer-dist
+      run: composer install --optimize-autoloader --no-progress --no-interaction --prefer-dist
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
