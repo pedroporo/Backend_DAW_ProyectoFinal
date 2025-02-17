@@ -21,6 +21,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: 8.4
+        extensions: mbstring,xmlrpc,soap,gd,xml,curl,zip,cli,bcmath,tokenizer,json,pear,mysql
 
     - name: Instalar dependencias de composer
       run: composer install --optimize-autoloader --no-dev --no-progress --no-interaction --prefer-dist
@@ -32,7 +33,7 @@ jobs:
       run: npm install
     - name: Buil archivos npm
       run: npm run build
-      
+
     - name: Deploy
       uses: deployphp/action@master
       with:
