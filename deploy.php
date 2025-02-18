@@ -25,6 +25,6 @@ task('reload:php-fpm', function () {
 
 after('deploy:failed', 'deploy:unlock');
 after('deploy', 'reload:php-fpm');
+before('deploy:symlink', 'artisan:key:generate');
 before('deploy:symlink', 'artisan:migrate:fresh');
-before('deploy:symlink', 'artisan:db:seed');
 before('deploy:symlink', 'artisan:storage:link');
