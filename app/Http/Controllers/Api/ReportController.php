@@ -18,23 +18,6 @@ class ReportController extends Controller
 
     //Listar emergencias asignades al teleoperador
 
-    /**
-     * @OA\Get(
-     *     path="/api/emergencies",
-     *     summary="List emergencies assigned to the operator",
-     *     tags={"Emergencies"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="List of emergency calls",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Call"))
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="User does not have an assigned zone",
-     *         @OA\JsonContent(type="object", @OA\Property(property="error", type="string"))
-     *     )
-     * )
-     */
     public function getEmergencies()
     {
 
@@ -57,31 +40,7 @@ class ReportController extends Controller
         return response()->json($emergencies);
     }
 
-    //Llistar les emergencies per zona
-    /**
-     * @OA\Get(
-     *     path="/api/emergencies/{zoneId}",
-     *     summary="List emergencies by zone",
-     *     tags={"Emergencies"},
-     *     @OA\Parameter(
-     *         name="zoneId",
-     *         in="path",
-     *         required=true,
-     *         description="Zone ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="List of emergency calls for the given zone",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Call"))
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="Unauthorized zone",
-     *         @OA\JsonContent(type="object", @OA\Property(property="error", type="string"))
-     *     )
-     * )
-     */
+ 
     public function getEmergencyActionsByZone($zoneId)
     {
         $user = Auth::user();
@@ -103,23 +62,7 @@ class ReportController extends Controller
         return response()->json($emergencyCalls);
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/patients",
-     *     summary="List patients assigned to the operator's zones",
-     *     tags={"Patients"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="List of patients",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Patient"))
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="User does not have assigned zones",
-     *         @OA\JsonContent(type="object", @OA\Property(property="error", type="string"))
-     *     )
-     * )
-     */
+
     public function getPatients()
     {
         //Recoger los pacientes que tenga asignado
@@ -157,31 +100,6 @@ class ReportController extends Controller
     }
     
 
-
-    /**
-     * @OA\Get(
-     *     path="/api/scheduled-calls",
-     *     summary="List scheduled calls for a specific date",
-     *     tags={"Calls"},
-     *     @OA\Parameter(
-     *         name="date",
-     *         in="query",
-     *         required=true,
-     *         description="Date to filter calls",
-     *         @OA\Schema(type="string", format="date")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="List of scheduled calls",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Call"))
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Date parameter is required",
-     *         @OA\JsonContent(type="object", @OA\Property(property="error", type="string"))
-     *     )
-     * )
-     */
     public function getScheduledCalls(Request $request)
     {
         $user = Auth::user();

@@ -348,6 +348,103 @@
                 }
             }
         },
+        "/api/calls": {
+            "get": {
+                "tags": [
+                    "Calls"
+                ],
+                "summary": "Obtener todas las llamadas entrantes y salientes",
+                "operationId": "9a23d14f999134958731dd0346155df0",
+                "responses": {
+                    "200": {
+                        "description": "Llamadas obtenidas correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "incoming_calls": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/IncomingCall"
+                                            }
+                                        },
+                                        "outgoing_calls": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/OutgoingCall"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/patients/{id}/calls": {
+            "get": {
+                "tags": [
+                    "Calls"
+                ],
+                "summary": "Obtener todas las llamadas de un paciente (entrantes y salientes)",
+                "operationId": "bceb340b9b5075725f202c28bf276105",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del paciente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Llamadas del paciente obtenidas correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "incoming_calls": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/IncomingCall"
+                                            }
+                                        },
+                                        "outgoing_calls": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/OutgoingCall"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Paciente no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Patient not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/contacts": {
             "get": {
                 "tags": [
@@ -633,6 +730,514 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/api/incoming-calls": {
+            "get": {
+                "tags": [
+                    "Incoming Calls"
+                ],
+                "summary": "Listar todas las llamadas entrantes",
+                "operationId": "19523d4f27f6355e1f40066bc10af707",
+                "responses": {
+                    "200": {
+                        "description": "Lista de llamadas entrantes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/IncomingCall"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Incoming Calls"
+                ],
+                "summary": "Crear una nueva llamada entrante",
+                "operationId": "176cac752099237c1615af36ef01b46c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IncomingCall"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Llamada entrante creada con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IncomingCall"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Datos no válidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/incoming-calls/{id}": {
+            "get": {
+                "tags": [
+                    "Incoming Calls"
+                ],
+                "summary": "Obtener una llamada entrante por su ID",
+                "operationId": "6d30bb95b997dd2482474011acb22c24",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la llamada entrante",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Llamada entrante obtenida correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IncomingCall"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Llamada no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Incoming call not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Incoming Calls"
+                ],
+                "summary": "Actualizar una llamada entrante",
+                "operationId": "65a11fac798eddb4e9b7ab09cff34f5c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la llamada entrante a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IncomingCall"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Llamada entrante actualizada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IncomingCall"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Datos no válidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Llamada entrante no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Incoming call not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Incoming Calls"
+                ],
+                "summary": "Eliminar una llamada entrante",
+                "operationId": "25d54719de4af2e32bbeb5b1fb2fc880",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la llamada entrante a eliminar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Llamada entrante eliminada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Incoming call deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Llamada entrante no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Incoming call not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/outgoing-calls": {
+            "get": {
+                "tags": [
+                    "Outgoing Calls"
+                ],
+                "summary": "Listar todas las llamadas salientes",
+                "operationId": "80cdd746cb604dded93e74e86739c496",
+                "responses": {
+                    "200": {
+                        "description": "Lista de llamadas salientes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/OutgoingCall"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Outgoing Calls"
+                ],
+                "summary": "Crear una nueva llamada saliente",
+                "operationId": "c9bd4d738de3081e4649f99423d35ec0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OutgoingCall"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Llamada saliente creada con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OutgoingCall"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Datos no válidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/outgoing-calls/{id}": {
+            "get": {
+                "tags": [
+                    "Outgoing Calls"
+                ],
+                "summary": "Obtener una llamada saliente por ID",
+                "operationId": "01f01790e6762bd8176231a3a3430947",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la llamada saliente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Llamada saliente encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OutgoingCall"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Llamada saliente no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Outgoing call not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Outgoing Calls"
+                ],
+                "summary": "Actualizar una llamada saliente",
+                "operationId": "f4409f3b9ed732d9d1ccf8490a2d57ff",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la llamada saliente a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OutgoingCall"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Llamada saliente actualizada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OutgoingCall"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Datos no válidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Llamada saliente no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Outgoing call not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Outgoing Calls"
+                ],
+                "summary": "Eliminar una llamada saliente",
+                "operationId": "68d28b2633b9c29e025c88c58df1d02a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la llamada saliente a eliminar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Llamada saliente eliminada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Outgoing call deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Llamada saliente no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Outgoing call not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/patients": {
@@ -1604,6 +2209,42 @@
                 },
                 "type": "object"
             },
+            "Call": {
+                "description": "Modelo de llamada (entrada o salida), representando una llamada entre un paciente y un operador",
+                "properties": {
+                    "timestamp": {
+                        "description": "Fecha y hora de la llamada",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-02-18T15:30:00"
+                    },
+                    "patient_id": {
+                        "description": "ID del paciente relacionado",
+                        "type": "integer",
+                        "example": 37
+                    },
+                    "user_id": {
+                        "description": "ID del usuario que realizó la llamada",
+                        "type": "integer",
+                        "example": 42
+                    },
+                    "description": {
+                        "description": "Descripción de la llamada",
+                        "type": "string",
+                        "maxLength": 1000,
+                        "example": "Descripción de la llamada realizada al paciente"
+                    },
+                    "formatted_timestamp": {
+                        "description": "Fecha y hora de la llamada formateada",
+                        "type": "string",
+                        "example": "18-02-2025 15:30"
+                    },
+                    "patient": {
+                        "$ref": "#/components/schemas/Patient"
+                    }
+                },
+                "type": "object"
+            },
             "Contact": {
                 "description": "Esquema del model Contact",
                 "properties": {
@@ -1635,6 +2276,117 @@
                     }
                 },
                 "type": "object"
+            },
+            "IncomingCall": {
+                "description": "Modelo de llamada entrante, heredado del modelo Call, con información adicional sobre el tipo de llamada",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Call"
+                    },
+                    {
+                        "properties": {
+                            "timestamp": {
+                                "description": "Fecha y hora de la llamada",
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2025-02-18T15:30:00"
+                            },
+                            "patient_id": {
+                                "description": "ID del paciente relacionado",
+                                "type": "integer",
+                                "example": 37
+                            },
+                            "user_id": {
+                                "description": "ID del operador que realizó la llamada",
+                                "type": "integer",
+                                "example": 42
+                            },
+                            "type": {
+                                "description": "Tipo de llamada (social_emergency, medical_emergency, etc.)",
+                                "type": "enum",
+                                "enum": [
+                                    "social_emergency",
+                                    "medical_emergency",
+                                    "loneliness_crisis",
+                                    "unanswered_alarm",
+                                    "absence_notification",
+                                    "data_update",
+                                    "accidental",
+                                    "info_request",
+                                    "complaint",
+                                    "social_call",
+                                    "medical_appointment",
+                                    "other"
+                                ],
+                                "example": "social_emergency"
+                            },
+                            "description": {
+                                "description": "Descripción de la llamada",
+                                "type": "string",
+                                "maxLength": 1000,
+                                "example": "Descripción de la llamada entrante"
+                            },
+                            "formatted_timestamp": {
+                                "description": "Fecha y hora de la llamada formateada",
+                                "type": "string",
+                                "example": "18-02-2025 15:30"
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
+            "OutgoingCall": {
+                "description": "Modelo de llamada saliente, heredado del modelo Call, con información adicional sobre si es planificada y relacionada con una alarma",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Call"
+                    },
+                    {
+                        "properties": {
+                            "timestamp": {
+                                "description": "Fecha y hora de la llamada",
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2025-02-18T15:30:00"
+                            },
+                            "patient_id": {
+                                "description": "ID del paciente relacionado",
+                                "type": "integer",
+                                "example": 37
+                            },
+                            "user_id": {
+                                "description": "ID del operador que realizó la llamada",
+                                "type": "integer",
+                                "example": 42
+                            },
+                            "is_planned": {
+                                "description": "Indica si la llamada fue planificada",
+                                "type": "boolean",
+                                "example": true
+                            },
+                            "description": {
+                                "description": "Descripción de la llamada",
+                                "type": "string",
+                                "maxLength": 1000,
+                                "example": "Descripción de la llamada saliente"
+                            },
+                            "alarm_id": {
+                                "description": "ID de la alarma asociada a la llamada",
+                                "type": "integer",
+                                "example": 5
+                            },
+                            "formatted_timestamp": {
+                                "description": "Fecha y hora de la llamada formateada",
+                                "type": "string",
+                                "example": "18-02-2025 15:30"
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
             },
             "Patient": {
                 "description": "Esquema del model Patient",
@@ -1764,6 +2516,18 @@
         }
     },
     "tags": [
+        {
+            "name": "Calls",
+            "description": "Operaciones sobre las llamadas entrantes y salientes"
+        },
+        {
+            "name": "Incoming Calls",
+            "description": "Gestión de llamadas entrantes"
+        },
+        {
+            "name": "Outgoing Calls",
+            "description": "Gestión de llamadas salientes"
+        },
         {
             "name": "Alertas",
             "description": "Alertas"

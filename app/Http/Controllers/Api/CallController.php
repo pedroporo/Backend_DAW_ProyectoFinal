@@ -10,10 +10,30 @@ use App\Models\IncomingCall;
 use App\Models\OutgoingCall;
 use App\Models\Patient;
 
+
+/**
+ * @OA\Tag(
+ *     name="Calls",
+ *     description="Operaciones sobre las llamadas entrantes y salientes"
+ * )
+ */
 class CallController extends BaseController
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/calls",
+     *     summary="Obtener todas las llamadas entrantes y salientes",
+     *     tags={"Calls"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Llamadas obtenidas correctamente",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="incoming_calls", type="array", @OA\Items(ref="#/components/schemas/IncomingCall")),
+     *             @OA\Property(property="outgoing_calls", type="array", @OA\Items(ref="#/components/schemas/OutgoingCall"))
+     *         )
+     *     )
+     * )
      */
     public function index()
     {
@@ -26,14 +46,38 @@ class CallController extends BaseController
             'outgoing_calls' => $outgoingCalls
         ]);    }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Call $call)
-    {
-        return response()->json($call);
-    }
 
+    /**
+     * @OA\Get(
+     *     path="/api/patients/{id}/calls",
+     *     summary="Obtener todas las llamadas de un paciente (entrantes y salientes)",
+     *     tags={"Calls"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID del paciente",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Llamadas del paciente obtenidas correctamente",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="incoming_calls", type="array", @OA\Items(ref="#/components/schemas/IncomingCall")),
+     *             @OA\Property(property="outgoing_calls", type="array", @OA\Items(ref="#/components/schemas/OutgoingCall"))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Paciente no encontrado",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Patient not found")
+     *         )
+     *     )
+     * )
+     */
     public function getCallsForPatient($id){
 
         $patient = Patient::find($id);

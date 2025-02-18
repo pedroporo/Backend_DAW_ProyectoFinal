@@ -50,12 +50,15 @@ Route::apiResource('incoming-calls', IncomingCallController::class);
 Route::post('incoming-calls', [IncomingCallController::class, 'store']);
 Route::delete('/incoming-calls/{incomingCall}', [IncomingCallController::class, 'destroy']);
 Route::put('/incoming-calls/{incomingCall}', [IncomingCallController::class, 'update']);
+Route::get('incoming-calls/{incomingCall}', [IncomingCallController::class, 'show']);
 
 
 Route::apiResource('outgoing-calls', OutgoingCallController::class);
 Route::post('outgoing-calls', [OutgoingCallController::class, 'store']);
 Route::delete('/outgoing-calls/{outgoingCall}', [OutgoingCallController::class, 'destroy']);
 Route::put('/outgoing-calls/{outgoingCall}', [OutgoingCallController::class, 'update']);
+Route::get('outgoing-calls/{outgoingCall}', [OutgoingCallController::class, 'show']);
+
 
 Route::get('reports/emergencies',[ReportController::class, 'getEmergencies' ]);
 Route::get('reports/patients', [ReportController::class, 'getPatients']);
