@@ -51,4 +51,13 @@ jobs:
          shared_dirs: ['./storage', './bootstrap/cache']
          shared_files: ['.env']
          writable_dirs: ['./storage', './bootstrap/cache']
+    - name: Cambiar permisos
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.ADMIN }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          sudo chown deployer:www-data /var/www/api -R
         
