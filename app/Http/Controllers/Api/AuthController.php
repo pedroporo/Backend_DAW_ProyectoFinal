@@ -55,7 +55,7 @@ class AuthController extends BaseController
             $authUser = Auth::user();
             $result['token'] =  $authUser->createToken('MyAuthApp')->plainTextToken;
             $result['name'] =  $authUser->name;
-
+            $result['avatar'] =  $authUser->avatar;
             return $this->sendResponse($result, 'User signed in');
         }
         return $this->sendError('Unauthorised.', ['error' => 'incorrect Email/Password']);
@@ -81,7 +81,7 @@ class AuthController extends BaseController
             Auth::login($user);
             $result['token'] =  $user->createToken('Personal Access Token')->plainTextToken;
             $result['name'] =  $user->name;
-
+            $result['avatar'] =  $user->avatar;
             return $this->sendResponse($result, 'User signed in');
 
         } catch (\Exception $e) {
