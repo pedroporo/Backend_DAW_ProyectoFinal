@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController as BaseController;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
@@ -54,7 +55,7 @@ class AuthController extends BaseController
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $authUser = Auth::user();
             $result['token'] =  $authUser->createToken('MyAuthApp')->plainTextToken;
-            $result['user'] =  $authUser;
+            $result['user'] = new UserResource($authUser);
             return $this->sendResponse($result, 'User signed in');
         }
         return $this->sendError('Unauthorised.', ['error' => 'incorrect Email/Password']);
@@ -79,7 +80,7 @@ class AuthController extends BaseController
             // Autentica l'usuari
             Auth::login($user);
             $result['token'] =  $user->createToken('Personal Access Token')->plainTextToken;
-            $result['user'] =  $user;
+            $result['user'] =  new UserResource($user);
             return $this->sendResponse($result, 'User signed in');
 
         } catch (\Exception $e) {
