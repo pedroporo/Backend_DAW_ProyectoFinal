@@ -5,6 +5,8 @@ namespace Deployer;
 require 'vendor/deployer/deployer/recipe/laravel.php';
 
 set('application', 'Backend API');
+set('repository', 'https://github.com/pedroporo/Backend_DAW_ProyectoFinal.git');
+set('git_tty', true);
 set('keep_releases', 5);
 add('shared_dirs', ['./storage', './bootstrap/cache']);
 add('shared_files', ['.env']);
