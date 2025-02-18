@@ -34,7 +34,7 @@ jobs:
     - name: Buil archivos npm
       run: npm run build
     - name: Instalar paquetes necesarios
-      run: apt install git -y
+      run: sudo apt install git -y
     - name: Configure SSH
       uses: shimataro/ssh-key-action@v2
       with:
