@@ -128,7 +128,7 @@ class ReportController extends Controller
         // Obtener el usuario autenticado (asumiendo que usas autenticación con Laravel)
 
         // Obtener las zonas asociadas al usuario con ID 9 cambiar a $user = auth()->user(); esto es solo de prueba
-        $user = \App\Models\User::find(9);
+        $user = \App\Models\User::find(2);
         $zonesIds = $user->zones()->pluck('zones.id'); // Obtiene los IDs de las zonas
 
         // Obtener los pacientes que estén en las zonas asociadas al usuario

@@ -13,6 +13,6 @@ class UserZoneSeeder extends Seeder
      */
     public function run(): void
     {
-        UserZone::factory()->count(4)->create();
+        UserZone::factory()->count(10)->create();
     }
 }

@@ -29,8 +29,6 @@ class OutgoingCallFactory extends Factory
             'description' => $this->faker->text,
             'is_planned' => $this->faker->boolean,
             'alarm_id' => Alert::factory(),
-    
-
         ];
     }
 }
