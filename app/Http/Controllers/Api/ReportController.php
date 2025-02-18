@@ -140,7 +140,7 @@ class ReportController extends Controller
     public function getPatientsPDF()
     {
         // Obtener las zonas asociadas al usuario con ID 9
-        $user = User::find(9);
+        $user = User::find(2);
         $zonesIds = $user->zones()->pluck('zones.id'); // Obtiene los IDs de las zonas asociadas al usuario
     
         // Obtener los pacientes que estén en las zonas asociadas al usuario

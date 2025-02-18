@@ -9,6 +9,9 @@ use App\Http\Controllers\Api\OperatorController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\ZoneController;
+use App\Http\Controllers\Api\IncomingCallController;
+use App\Http\Controllers\Api\OutgoingCallController;
+use App\Http\Controllers\Api\CallController;
 
 Route::post('login', [AuthController::class, 'login'])->middleware('api');
 Route::post('register', [AuthController::class, 'register'])->middleware('api');
@@ -34,9 +37,25 @@ Route::middleware(['auth:sanctum', 'api'])->group(function () {
     Route::get('reports/done-calls',[ReportController::class, 'getDoneCalls']);
     Route::get('reports/patient-history/{id}', [ReportController::class, 'getPatientHistory']);
     
+    //Rutas de Calls
 
+  
     Route::post('logout', [AuthController::class, 'logout']);
 });
+
+Route::apiResource('calls', CallController::class);
+Route::get('patients/{id}/calls', [CallController::class, 'getCallsForPatient']);
+
+Route::apiResource('incoming-calls', IncomingCallController::class);
+Route::post('incoming-calls', [IncomingCallController::class, 'store']);
+Route::delete('/incoming-calls/{incomingCall}', [IncomingCallController::class, 'destroy']);
+Route::put('/incoming-calls/{incomingCall}', [IncomingCallController::class, 'update']);
+
+
+Route::apiResource('outgoing-calls', OutgoingCallController::class);
+Route::post('outgoing-calls', [OutgoingCallController::class, 'store']);
+Route::delete('/outgoing-calls/{outgoingCall}', [OutgoingCallController::class, 'destroy']);
+Route::put('/outgoing-calls/{outgoingCall}', [OutgoingCallController::class, 'update']);
 
 Route::get('reports/emergencies',[ReportController::class, 'getEmergencies' ]);
 Route::get('reports/patients', [ReportController::class, 'getPatients']);

@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Call;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Api\BaseController;
+use App\Models\IncomingCall;
+use App\Models\OutgoingCall;
+use App\Models\Patient;
 
 class CallController extends BaseController
 {
@@ -13,38 +17,37 @@ class CallController extends BaseController
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        
+        $incomingCalls = IncomingCall::all();
+        $outgoingCalls = OutgoingCall::all();
+    
+        return response()->json([
+            'incoming_calls' => $incomingCalls,
+            'outgoing_calls' => $outgoingCalls
+        ]);    }
 
     /**
      * Display the specified resource.
      */
     public function show(Call $call)
     {
-        //
+        return response()->json($call);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Call $call)
-    {
-        //
+    public function getCallsForPatient($id){
+
+        $patient = Patient::find($id);
+
+        if (!$patient) {
+            return response()->json(['message' => 'Patient not found'], 404);
+        }
+
+        $incomingCalls = IncomingCall::where('patient_id', $id)->get();
+        $outgoingCalls = OutgoingCall::where('patient_id', $id)->get();
+        return response()->json([
+            'incoming_calls' => $incomingCalls,
+            'outgoing_calls' => $outgoingCalls
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Call $call)
-    {
-        //
-    }
 }

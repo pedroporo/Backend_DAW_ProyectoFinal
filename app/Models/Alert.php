@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Alert extends Model
 {
+    protected $table = 'alerts';
        /**
      * @OA\Schema(
      *     schema="Alert",
