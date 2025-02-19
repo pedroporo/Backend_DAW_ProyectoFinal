@@ -12,8 +12,7 @@ class OutGoingCallRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        //De momento comento esto solo para comprovaciones
-        
+        //Comentado por problemas de autorizacion
         // if ($this->user()->can('create', OutgoingCall::class) || $this->user()->can('update', OutgoingCall::class)) {
         //     return true;
         // } else {
@@ -30,13 +29,14 @@ class OutGoingCallRequest extends FormRequest
      */
     public function rules(): array
     {
+        //cambiar si es planificada tindra una alarma sino no
         return [
             'timestamp' => ['required', 'date'],
             'patient_id' => ['required', 'exists:patients,id'],
             'user_id' => ['required', 'exists:users,id'],
             'is_planned' => ['required', 'boolean'],
             'description' => ['nullable', 'string', 'max:1000'],
-            'alarm_id' => ['required', 'exists:alerts,id'],
+            'alarm_id' => ['required_if:is_planned,true', 'nullable', 'exists:alerts,id'],
         ];
     }
 }

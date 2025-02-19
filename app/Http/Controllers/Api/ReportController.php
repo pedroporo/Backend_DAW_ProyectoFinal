@@ -17,50 +17,11 @@ class ReportController extends Controller
 {
 
     //Listar emergencias asignades al teleoperador
+    // Son les cridades entrants de tipus Atencio d'emergencies
+    public function getEmergencies() {}
 
-    public function getEmergencies()
-    {
 
-        $user = Auth::user();
-
-        if (!$user->zone_id) {
-            return response()->json(['Error' => 'No tienes una zona asignada'], 401);
-        }
-
-        //Llamadas entrantes consideradas emergencia.
-        $emergencyTypes = ['social_emergency', 'medical_emergency', 'loneliness_crisis', 'unanswered_alarm'];
-
-        // Obtener llamadas solo de los pacientes en la zona del operador
-        $emergencies = Call::whereIn('incoming_calls_type_enum', $emergencyTypes)
-            ->whereHas('patient', function ($query) use ($user) {
-                $query->where('zone_id', $user->zone_id);
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
-        return response()->json($emergencies);
-    }
-
- 
-    public function getEmergencyActionsByZone($zoneId)
-    {
-        $user = Auth::user();
-
-        $zoneIds = $user->zones()->pluck('zones.id');
-        if (!$zoneIds->contains($zoneId)) {
-            return response()->json(['error' => 'Zona no autoritzada'], 403);
-        }
-
-        $emergencyTypes = ['social_emergency', 'medical_emergency', 'loneliness_crisis', 'unanswered_alarm'];
-
-        $emergencyCalls = Call::whereIn('incoming_calls_type_enum', $emergencyTypes)
-            ->whereHas('patient', function ($query) use ($zoneId) {
-                $query->where('zone_id', $zoneId);
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return response()->json($emergencyCalls);
-    }
+    public function getEmergencyActionsByZone($zoneId) {}
 
 
     public function getPatients()
@@ -68,13 +29,10 @@ class ReportController extends Controller
         //Recoger los pacientes que tenga asignado
         // el teleoperador y ordenarlos por apellido
 
-        // Obtener el usuario autenticado (asumiendo que usas autenticación con Laravel)
+        //$user = auth()->user(); esto es solo de prueba
 
-        // Obtener las zonas asociadas al usuario con ID 9 cambiar a $user = auth()->user(); esto es solo de prueba
         $user = \App\Models\User::find(2);
         $zonesIds = $user->zones()->pluck('zones.id'); // Obtiene los IDs de las zonas
-
-        // Obtener los pacientes que estén en las zonas asociadas al usuario
         $patients = \App\Models\Patient::whereIn('zone_id', $zonesIds)->orderBy('last_name', 'asc')->get();
 
         return response()->json($patients);
@@ -85,120 +43,124 @@ class ReportController extends Controller
         // Obtener las zonas asociadas al usuario con ID 9
         $user = User::find(2);
         $zonesIds = $user->zones()->pluck('zones.id'); // Obtiene los IDs de las zonas asociadas al usuario
-    
+
         // Obtener los pacientes que estén en las zonas asociadas al usuario
         $patients = Patient::whereIn('zone_id', $zonesIds)->orderBy('last_name', 'asc')->get();
-    
+
         // Pasar el nombre del teleoperador a la vista
         $operatorName = $user->name; // O el campo que almacene el nombre del teleoperador
-    
+
         // Cargar la vista y generar el PDF
         $pdf = Pdf::loadView('pdf.patients', ['patients' => $patients, 'operatorName' => $operatorName]);
-    
+
         // Devolver el PDF como descarga
         return $pdf->download('patients_list.pdf');
     }
+
+    public function getDoneCallsByDate(Request $request) {
+        // Obtener la fecha desde la URL o usar la fecha actual si no se proporciona
+        $date = $request->input('date', now()->toDateString());
     
+        // Verificar si el usuario está autenticado (o usar un usuario específico para pruebas)
+        $user = auth()->user() ?? User::find(2);
+    
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no autenticado'], 401);
+        }
+    
+        // Filtrar las llamadas salientes que coincidan con la fecha seleccionada
+        $outgoingCalls = \App\Models\OutgoingCall::with('patient', 'alert')
+            ->where('user_id', $user->id)
+            ->whereDate('timestamp', $date) // Filtrar por fecha específica
+            ->orderBy('timestamp', 'desc')
+            ->get();
+    
+        return response()->json([
+            'date' => $date,
+            'outgoing_calls' => $outgoingCalls
+        ]);
+    }
 
-    public function getScheduledCalls(Request $request)
+    public function getDoneCallsByDatePDF(Request $request) {
+
+    }
+
+    public function getScheduledCalls(Request $request) {}
+
+    public function getScheduledCallsPDF(Request $request) {}
+
+
+    public function getCallsUser()
     {
-        $user = Auth::user();
-        $date = $request->query('date');
 
-        if (!$date) {
-            return response()->json(['Error' => 'Debes proporcionar una fecha'], 400);
+        // Verificar si el usuario está autenticado
+        //$user = auth()->user();
+        $user = User::find(2);
+
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no autenticado'], 401);
         }
 
-        $zoneIds = $user->zones()->pluck('zones.id');
+        $now = now();
 
-        if ($zoneIds->isEmpty()) {
-            return response()->json(['error' => 'No tienes zonas asignadas'], 401);
-        }
-
-        $scheduledCalls = Call::whereDate('scheduled_at', $date)
-            ->whereHas('patient', function ($query) use ($zoneIds) {
-                $query->whereIn('zone_id', $zoneIds);
-            })
-            ->orderBy('scheduled_at', 'asc')
+        // Obtener llamadas entrantes realizadas por el usuario y que ya ocurrieron
+        $incomingCalls = \App\Models\IncomingCall::where('user_id', $user->id)
+            ->where('timestamp', '<=', $now) // Solo llamadas ya realizadas
+            ->orderBy('timestamp', 'desc')
             ->get();
 
-        return response()->json($scheduledCalls);
-    }
-
-    public function getDoneCalls(Request $request)
-    {
-        $user = Auth::user();
-        $date = $request->query('date');
-
-        if (!$date) {
-            return response()->json(['error' => 'Debes proporcionar una fecha'], 400);
-        }
-
-        $zoneIds = $user->zones()->pluck('zones.id');
-        if ($zoneIds->isEmpty()) {
-            return response()->json(['error' => 'No tienes zonas asignadas'], 401);
-        }
-
-        $doneCalls = Call::whereDate('completed_at', $date)
-            ->where('user_id', $user->id) // Filtrar llamadas realizadas por el usuario autenticado
-            ->whereHas('patient', function ($query) use ($zoneIds) {
-                $query->whereIn('zone_id', $zoneIds);
-            })
-            ->orderBy('completed_at', 'asc')
+        // Obtener llamadas salientes realizadas por el usuario y que ya ocurrieron
+        $outgoingCalls = \App\Models\OutgoingCall::where('user_id', $user->id)
+            ->where('timestamp', '<=', $now) // Solo llamadas ya realizadas
+            ->orderBy('timestamp', 'desc')
             ->get();
 
-        return response()->json($doneCalls);
+        // Responder con las llamadas separadas en la respuesta JSON
+        return response()->json([
+            'incoming_calls' => $incomingCalls,
+            'outgoing_calls' => $outgoingCalls,
+        ]);
     }
 
-    public function getPatientCallHistory($patientId)
-    {
-        $user = Auth::user();
+    public function getUserCallsPDF()
+{
+    // Verificar si el usuario está autenticado
+    //$user = auth()->user();
+    $user = User::find(2);
 
-        $zoneIds = $user->zones()->pluck('zones.id');
-
-        if ($zoneIds->isEmpty()) {
-            return response()->json(['error' => 'No tienes zonas asignadas'], 401);
-        }
-
-        $patient = Patient::where('id', $patientId)
-            ->whereIn('zone_id', $zoneIds)
-            ->first();
-
-        if (!$patient) {
-            return response()->json(['error' => 'Este paciente no está en tus zonas'], 403);
-        }
-
-        $callHistory = Call::where('patient_id', $patientId)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return response()->json($callHistory);
+    if (!$user) {
+        return response()->json(['error' => 'Usuario no autenticado'], 401);
     }
 
-    public function getCallHistoryByPatientAndType($patientId, Request $request)
-    {
-        $user = Auth::user();
-        $zoneIds = $user->zones()->pluck('zones.id');
+    // Fecha actual para filtrar solo las llamadas ya realizadas
+    $now = now();
 
-        // Ensure the patient is within the user's zones
-        $patient = Patient::where('id', $patientId)
-            ->whereIn('zone_id', $zoneIds)
-            ->first();
+    // Obtener llamadas entrantes realizadas por el usuario y que ya ocurrieron
+    $incomingCalls = \App\Models\IncomingCall::where('user_id', $user->id)
+        ->where('timestamp', '<=', $now) // Solo llamadas ya realizadas
+        ->orderBy('timestamp', 'desc')
+        ->get();
 
-        if (!$patient) {
-            return response()->json(['error' => 'Aquest pacient no està en les teves zones'], 403);
-        }
+    // Obtener llamadas salientes realizadas por el usuario y que ya ocurrieron
+    $outgoingCalls = \App\Models\OutgoingCall::where('user_id', $user->id)
+        ->where('timestamp', '<=', $now) // Solo llamadas ya realizadas
+        ->orderBy('timestamp', 'desc')
+        ->get();
 
-        $callType = $request->query('call_type'); // Call type filter
+    // Cargar la vista que deseas convertir a PDF
+    $pdf = PDF::loadView('pdf.callsDone', ['operatorName' => $user->name], [
+        'incomingCalls' => $incomingCalls,
+        'outgoingCalls' => $outgoingCalls,
+    ]);
 
-        $query = Call::where('patient_id', $patientId);
+    // Descargar el PDF
+    return $pdf->download('llamadas_realizadas.pdf');
+}
 
-        if ($callType) {
-            $query->where('incoming_calls_type_enum', $callType);
-        }
 
-        $callHistory = $query->orderBy('created_at', 'desc')->get();
+    public function getPatientCallHistory($patientId) {}
+    public function getPatientCallHistoryPDF($patientId) {}
 
-        return response()->json($callHistory);
-    }
+    public function getCallHistoryByPatientAndType($patientId, Request $request) {}
+    public function getCallHistoryByPatientAndTypePDF($patientId, Request $request) {}
 }

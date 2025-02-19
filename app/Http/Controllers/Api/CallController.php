@@ -24,6 +24,7 @@ class CallController extends BaseController
      *     path="/api/calls",
      *     summary="Obtener todas las llamadas entrantes y salientes",
      *     tags={"Calls"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Llamadas obtenidas correctamente",
