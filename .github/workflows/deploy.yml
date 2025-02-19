@@ -33,6 +33,11 @@ jobs:
       run: npm install
     - name: Buil archivos npm
       run: npm run build
+    - name: Configure SSH
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
     - name: Deploy
       uses: deployphp/action@master
       with:
