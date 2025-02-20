@@ -126,7 +126,6 @@ class ReportController extends Controller
         ]);
     }
 
-    
     /**
  * @OA\Get(
  *     path="/api/reports/done-calls/pdf",
@@ -176,7 +175,6 @@ class ReportController extends Controller
 
         return $pdf->download("llamadas_realizadas_{$date}.pdf");
     }
-
 
     /**
  * @OA\Get(
