@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\IncomingCall;
 use Illuminate\Database\Seeder;
+use App\Models\OutgoingCall;
 
 class CallSeeder extends Seeder
 {
@@ -12,6 +13,7 @@ class CallSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+             IncomingCall::factory()->count(10)->create();
+             OutgoingCall::factory()->count(10)->create();
     }
 }
