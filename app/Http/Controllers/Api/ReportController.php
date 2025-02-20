@@ -149,39 +149,30 @@ class ReportController extends Controller
 
     public function getScheduledCallsDatePDF(Request $request)
     {
-        // Obtener la fecha desde la URL o usar la fecha actual si no se proporciona    
         $date = $request->input('date', now()->toDateString());
-
-        // Verificar si el usuario está autenticado (o usar un usuario específico para pruebas)
         $user = auth()->user() ?? User::find(2);
 
         if (!$user) {
             return response()->json(['error' => 'Usuario no autenticado'], 401);
         }
-
-        // Filtrar las llamadas salientes planificadas por la fecha proporcionada
         $scheduledCalls = \App\Models\OutgoingCall::with('patient', 'alert')
             ->where('user_id', $user->id)
-            ->where('is_planned', 1) // Solo llamadas planificadas
-            ->whereDate('timestamp', $date) // Filtrar por fecha específica
+            ->where('is_planned', 1) 
+            ->whereDate('timestamp', $date)
             ->orderBy('timestamp', 'asc')
             ->get();
 
-        // Cargar la vista con las llamadas planificadas
         $pdf = PDF::loadView('pdf.callsScheduledDate', [
             'scheduledCalls' => $scheduledCalls,
             'date' => $date,
         ]);
 
-        // Retornar el PDF para su descarga
         return $pdf->download('scheduled_calls_' . $date . '.pdf');
     }
 
 
     public function getCallsUser()
     {
-
-        // Verificar si el usuario está autenticado
         //$user = auth()->user();
         $user = User::find(2);
 
@@ -190,14 +181,11 @@ class ReportController extends Controller
         }
 
         $now = now();
-
-        // Obtener llamadas entrantes realizadas por el usuario y que ya ocurrieron
         $incomingCalls = \App\Models\IncomingCall::where('user_id', $user->id)
             ->where('timestamp', '<=', $now) // Solo llamadas ya realizadas
             ->orderBy('timestamp', 'desc')
             ->get();
 
-        // Obtener llamadas salientes realizadas por el usuario y que ya ocurrieron
         $outgoingCalls = \App\Models\OutgoingCall::where('user_id', $user->id)
             ->where('timestamp', '<=', $now) // Solo llamadas ya realizadas
             ->orderBy('timestamp', 'desc')
