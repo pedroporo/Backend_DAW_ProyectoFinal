@@ -73,10 +73,13 @@ class ReportController extends Controller
     }
 
 
-    /**
+ /**
  * @OA\Get(
  *     path="/api/reports/done-calls",
  *     summary="Obtener llamadas realizadas (salientes) por fecha",
+ *     description="Este endpoint permite obtener las llamadas realizadas por el usuario (salientes) filtradas por fecha.  
+ *     **Ejemplo de uso:**  
+ *     `http://localhost:8000/api/reports/done-calls?date=2025-02-17`",
  *     tags={"Reportes"},
  *     security={{"bearerAuth":{}}},
  *     @OA\Parameter(
@@ -126,10 +129,13 @@ class ReportController extends Controller
         ]);
     }
 
-    /**
+/**
  * @OA\Get(
  *     path="/api/reports/done-calls/pdf",
  *     summary="Generar PDF de llamadas realizadas por fecha",
+ *     description="Este endpoint permite generar un archivo PDF con las llamadas realizadas por el usuario (salientes) filtradas por una fecha específica.  
+ *     **Ejemplo de uso:**  
+ *     `http://localhost:8000/api/reports/done-calls/pdf?date=2025-02-18`",
  *     tags={"Reportes"},
  *     security={{"bearerAuth":{}}},
  *     @OA\Parameter(
@@ -142,10 +148,12 @@ class ReportController extends Controller
  *     @OA\Response(
  *         response=200,
  *         description="PDF generado de llamadas realizadas por fecha",
- *         @OA\JsonContent(
- *             type="string",
- *             example="llamadas_realizadas_2025-02-18.pdf"
- *         )
+ *         content={
+ *             @OA\MediaType(
+ *                 mediaType="application/pdf",
+ *                 @OA\Schema(type="string", format="binary")
+ *             )
+ *         }
  *     ),
  *     @OA\Response(
  *         response=401,
@@ -176,12 +184,22 @@ class ReportController extends Controller
         return $pdf->download("llamadas_realizadas_{$date}.pdf");
     }
 
-    /**
+ /**
  * @OA\Get(
  *     path="/api/reports/scheduled-calls-pdf",
  *     summary="Generar PDF de llamadas planificadas",
+ *     description="Este endpoint genera un archivo PDF con las llamadas planificadas.  
+ *     **Ejemplo de uso:**  
+ *     `http://localhost:8000/api/reports/scheduled-calls-pdf?date=2025-02-18`",
  *     tags={"Reportes"},
  *     security={{"bearerAuth":{}}},
+ *     @OA\Parameter(
+ *         name="date",
+ *         in="query",
+ *         description="Fecha en formato YYYY-MM-DD para filtrar las llamadas planificadas.",
+ *         required=false,
+ *         @OA\Schema(type="string", format="date", example="2025-02-18")
+ *     ),
  *     @OA\Response(
  *         response=200,
  *         description="PDF generado de llamadas planificadas",
@@ -215,10 +233,13 @@ class ReportController extends Controller
 
 
 
-    /**
+/**
  * @OA\Get(
  *     path="/api/reports/scheduled-calls-date",
  *     summary="Obtener llamadas planificadas por fecha",
+ *     description="Este endpoint devuelve las llamadas planificadas para una fecha específica.  
+ *     **Ejemplo de uso:**  
+ *     `http://localhost:8000/api/reports/scheduled-calls-date?date=2025-02-18`",
  *     tags={"Reportes"},
  *     security={{"bearerAuth":{}}},
  *     @OA\Parameter(
@@ -318,10 +339,13 @@ class ReportController extends Controller
         return $pdf->download('scheduled_calls_' . $date . '.pdf');
     }
 
-    /**
+/**
  * @OA\Get(
  *     path="/api/reports/callsUser",
  *     summary="Obtener todas las llamadas del usuario",
+ *     description="Este endpoint permite obtener todas las llamadas del usuario, tanto las entrantes como las salientes.  
+ *     **Ejemplo de uso:**  
+ *     `http://localhost:8000/api/reports/callsUser`",
  *     tags={"Reportes"},
  *     security={{"bearerAuth":{}}},
  *     @OA\Response(
@@ -372,10 +396,13 @@ class ReportController extends Controller
     }
 
 
-    /**
+/**
  * @OA\Get(
  *     path="/api/reports/callsUser/pdf",
  *     summary="Obtener todas las llamadas del usuario en formato PDF",
+ *     description="Este endpoint permite obtener todas las llamadas del usuario (entrantes y salientes) en formato PDF.  
+ *     **Ejemplo de uso:**  
+ *     `http://localhost:8000/api/reports/callsUser/pdf`",
  *     tags={"Reportes"},
  *     security={{"bearerAuth":{}}},
  *     @OA\Response(
@@ -418,10 +445,13 @@ class ReportController extends Controller
     }
 
 
-    /**
+ /**
  * @OA\Get(
  *     path="/api/reports/patients/{id}/call-history",
  *     summary="Obtener el historial de llamadas de un paciente",
+ *     description="Este endpoint obtiene el historial de llamadas de un paciente, tanto las entrantes como las salientes.  
+ *     **Ejemplo de uso:**  
+ *     `http://localhost:8000/api/reports/patients/4/call-history`",
  *     tags={"Reportes"},
  *     @OA\Parameter(
  *         name="id",
@@ -489,11 +519,13 @@ class ReportController extends Controller
         ]);
     }
 
-   /**
+/**
  * @OA\Get(
  *     path="/api/reports/patients/{id}/call-history/pdf",
  *     summary="Obtener historial de llamadas de un paciente en formato PDF",
- *     description="Este endpoint permite obtener el historial de llamadas (entrantes y salientes) de un paciente específico en formato PDF.",
+ *     description="Este endpoint permite obtener el historial de llamadas (entrantes y salientes) de un paciente específico en formato PDF.  
+ *     **Ejemplo de uso:**  
+ *     `http://localhost:8000/api/reports/patients/4/call-history/pdf`",
  *     tags={"Reportes"},
  *     @OA\Parameter(
  *         name="id",
@@ -547,11 +579,13 @@ class ReportController extends Controller
         return $pdf->download('Historial_Llamadas_' . $patient->name . '_' . $patient->last_name . '.pdf');
     }
 
-    /**
+/**
  * @OA\Get(
  *     path="/api/reports/emergencies",
  *     summary="Obtener emergencias filtradas por tipo y zona",
- *     description="Este endpoint permite obtener las emergencias de tipo social, médica, crisis de soledad y alarmas no respondidas, con la opción de filtrar por zona.",
+ *     description="Este endpoint permite obtener las emergencias de tipo social, médica, crisis de soledad y alarmas no respondidas, con la opción de filtrar por zona.  
+ *     **Ejemplo de uso:**  
+ *     `http://localhost:8000/api/reports/emergencies?zone=55`",
  *     tags={"Reportes"},
  *     @OA\Parameter(
  *         name="zone",
@@ -628,11 +662,13 @@ class ReportController extends Controller
     }
 
 
-    /**
+/**
  * @OA\Get(
  *     path="/api/reports/emergencies/pdf",
  *     summary="Generar reporte en PDF de las emergencias filtradas por tipo y zona",
- *     description="Este endpoint permite generar un reporte en formato PDF de las emergencias de tipo social, médica, crisis de soledad y alarmas no respondidas, con la opción de filtrar por zona.",
+ *     description="Este endpoint permite generar un reporte en formato PDF de las emergencias de tipo social, médica, crisis de soledad y alarmas no respondidas, con la opción de filtrar por zona.  
+ *     **Ejemplo de uso:**  
+ *     `http://localhost:8000/api/reports/emergencies/pdf?zone=55`",
  *     tags={"Reportes"},
  *     @OA\Parameter(
  *         name="zone",

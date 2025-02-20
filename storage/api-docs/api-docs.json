@@ -1740,6 +1740,7 @@
                     "Reportes"
                 ],
                 "summary": "Obtener llamadas realizadas (salientes) por fecha",
+                "description": "Este endpoint permite obtener las llamadas realizadas por el usuario (salientes) filtradas por fecha.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/done-calls?date=2025-02-17`",
                 "operationId": "8b0f12c3a923e339c94361e6195c81ab",
                 "parameters": [
                     {
@@ -1794,6 +1795,7 @@
                     "Reportes"
                 ],
                 "summary": "Generar PDF de llamadas realizadas por fecha",
+                "description": "Este endpoint permite generar un archivo PDF con las llamadas realizadas por el usuario (salientes) filtradas por una fecha específica.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/done-calls/pdf?date=2025-02-18`",
                 "operationId": "28fe61ffd93440852b0bea101b8aef56",
                 "parameters": [
                     {
@@ -1812,11 +1814,11 @@
                     "200": {
                         "description": "PDF generado de llamadas realizadas por fecha",
                         "content": {
-                            "application/json": {
+                            "application/pdf": {
                                 "schema": {
-                                    "type": "string"
-                                },
-                                "example": "llamadas_realizadas_2025-02-18.pdf"
+                                    "type": "string",
+                                    "format": "binary"
+                                }
                             }
                         }
                     },
@@ -1837,7 +1839,21 @@
                     "Reportes"
                 ],
                 "summary": "Generar PDF de llamadas planificadas",
+                "description": "Este endpoint genera un archivo PDF con las llamadas planificadas.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/scheduled-calls-pdf?date=2025-02-18`",
                 "operationId": "272059558a8ee77b14e4c392dff73443",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Fecha en formato YYYY-MM-DD para filtrar las llamadas planificadas.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2025-02-18"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "PDF generado de llamadas planificadas",
@@ -1867,6 +1883,7 @@
                     "Reportes"
                 ],
                 "summary": "Obtener llamadas planificadas por fecha",
+                "description": "Este endpoint devuelve las llamadas planificadas para una fecha específica.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/scheduled-calls-date?date=2025-02-18`",
                 "operationId": "b900007d528e51e8f74b9c0c6cebc210",
                 "parameters": [
                     {
@@ -1964,6 +1981,7 @@
                     "Reportes"
                 ],
                 "summary": "Obtener todas las llamadas del usuario",
+                "description": "Este endpoint permite obtener todas las llamadas del usuario, tanto las entrantes como las salientes.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/callsUser`",
                 "operationId": "f2138b2493f398a07abc95942803dbbe",
                 "responses": {
                     "200": {
@@ -2007,6 +2025,7 @@
                     "Reportes"
                 ],
                 "summary": "Obtener todas las llamadas del usuario en formato PDF",
+                "description": "Este endpoint permite obtener todas las llamadas del usuario (entrantes y salientes) en formato PDF.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/callsUser/pdf`",
                 "operationId": "b356cfaa9bb50094b7a0b20aae089611",
                 "responses": {
                     "200": {
@@ -2032,6 +2051,7 @@
                     "Reportes"
                 ],
                 "summary": "Obtener el historial de llamadas de un paciente",
+                "description": "Este endpoint obtiene el historial de llamadas de un paciente, tanto las entrantes como las salientes.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/patients/4/call-history`",
                 "operationId": "08db5f7986a19c42842ed924ccb66613",
                 "parameters": [
                     {
@@ -2111,7 +2131,7 @@
                     "Reportes"
                 ],
                 "summary": "Obtener historial de llamadas de un paciente en formato PDF",
-                "description": "Este endpoint permite obtener el historial de llamadas (entrantes y salientes) de un paciente específico en formato PDF.",
+                "description": "Este endpoint permite obtener el historial de llamadas (entrantes y salientes) de un paciente específico en formato PDF.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/patients/4/call-history/pdf`",
                 "operationId": "01ed3ec17d5da1d8465c14182755140e",
                 "parameters": [
                     {
@@ -2166,7 +2186,7 @@
                     "Reportes"
                 ],
                 "summary": "Obtener emergencias filtradas por tipo y zona",
-                "description": "Este endpoint permite obtener las emergencias de tipo social, médica, crisis de soledad y alarmas no respondidas, con la opción de filtrar por zona.",
+                "description": "Este endpoint permite obtener las emergencias de tipo social, médica, crisis de soledad y alarmas no respondidas, con la opción de filtrar por zona.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/emergencies?zone=55`",
                 "operationId": "781744b2d1a9bec57f02463a5d1c9bf9",
                 "parameters": [
                     {
@@ -2244,14 +2264,14 @@
                 }
             }
         },
-        "/reports/emergencies/pdf": {
+        "/api/reports/emergencies/pdf": {
             "get": {
                 "tags": [
                     "Reportes"
                 ],
                 "summary": "Generar reporte en PDF de las emergencias filtradas por tipo y zona",
-                "description": "Este endpoint permite generar un reporte en formato PDF de las emergencias de tipo social, médica, crisis de soledad y alarmas no respondidas, con la opción de filtrar por zona.",
-                "operationId": "02e4e0b3d10f83922933e6c9dbfbe201",
+                "description": "Este endpoint permite generar un reporte en formato PDF de las emergencias de tipo social, médica, crisis de soledad y alarmas no respondidas, con la opción de filtrar por zona.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/emergencies/pdf?zone=55`",
+                "operationId": "e635490b76e894c3fad9a59dedcde51b",
                 "parameters": [
                     {
                         "name": "zone",

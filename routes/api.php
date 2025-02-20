@@ -53,28 +53,16 @@ Route::middleware(['auth:sanctum', 'api'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 });
 
-
 // Rutas de Informes 
-//http://localhost:8000/api/reports/scheduled-calls-date?date=2025-02-18
 Route::get('reports/scheduled-calls-date', [ReportController::class, 'getScheduledCallsDate']);
-//http://localhost:8000/api/reports/scheduled-calls-pdf-date?date=2025-02-18
 Route::get('reports/scheduled-calls-date-pdf', [ReportController::class, 'getScheduledCallsDatePDF']);
-//http://localhost:8000/api/reports/patients/4/call-history
 Route::get('reports/patients/{id}/call-history', [ReportController::class, 'getPatientCallHistory']);
-//http://localhost:8000/api/reports/patients/4/call-history/pdf
 Route::get('reports/patients/{id}/call-history/pdf', [ReportController::class, 'getPatientCallHistoryPDF']);
-//http://localhost:8000/api/reports/callsUser
 Route::get('reports/callsUser',[ReportController::class, 'getCallsUser']);
-//http://localhost:8000/api/reports/callsUser/pdf
 Route::get('reports/callsUser/pdf', [ReportController::class, 'getUserCallsPDF'])->name('reports.doneCallsPDF');
-//http://localhost:8000/api/reports/done-calls?date=2025-02-17
 Route::get('reports/done-calls', [ReportController::class, 'getDoneCallsByDate']);
-http://localhost:8000/api/reports/done-calls/pdf?date=2025-02-18
 Route::get('reports/done-calls/pdf', [ReportController::class, 'getDoneCallsByDatePDF']);
-//http://localhost:8000/api/reports/emergencies
-//http://localhost:8000/api/reports/emergencies?zone=55
 Route::get('reports/emergencies',[ReportController::class, 'getEmergencies' ]);
-//http://localhost:8000/api/reports/emergencies/pdf?zone=55
 Route::get('reports/emergencies/pdf', [ReportController::class, 'getEmergenciesPDF']);
 
 //Route::apiResource('patients', PatientController::class)->middleware('api');
