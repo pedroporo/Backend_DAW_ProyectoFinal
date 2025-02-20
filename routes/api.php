@@ -31,13 +31,6 @@ Route::middleware(['auth:sanctum', 'api'])->group(function () {
     Route::post('/user/delZone', [OperatorController::class, 'delZone'])->middleware('api');
     Route::apiResource('alerts', AlertController::class)->middleware('api');
 
-    // Rutas de Informes 
-    // Route::get('reports/emergencies',[ReportController::class, 'getEmergencies' ])->middleware('api');
-    // Route::get('reports/patients', [ReportController::class, 'getPatients'])->middleware('api');
-    // Route::get('reports/scheduled-calls', [ReportController::class, 'getScheduledCalls'])->middleware('api');
-    // Route::get('reports/done-calls',[ReportController::class, 'getDoneCalls']);
-    // Route::get('reports/patient-history/{id}', [ReportController::class, 'getPatientHistory'])->middleware('api');
-    
     Route::apiResource('calls', CallController::class)->middleware('api');
     Route::get('patients/{id}/calls', [CallController::class, 'getCallsForPatient'])->middleware('api');
     Route::get('/filter-calls', [CallController::class, 'getFilterCalls']);
@@ -57,7 +50,6 @@ Route::middleware(['auth:sanctum', 'api'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 });
 
-Route::get('/filter-calls', [CallController::class, 'getFilterCalls']);
 
 // Rutas de Informes 
 Route::get('reports/scheduled-calls', [ReportController::class, 'getScheduledCalls']);
@@ -75,8 +67,11 @@ Route::get('reports/done-calls/pdf', [ReportController::class, 'getDoneCallsByDa
 Route::get('reports/patients/{id}/call-history/pdf', [ReportController::class, 'getPatientCallHistoryPDF']);
 
 Route::get('reports/emergencies',[ReportController::class, 'getEmergencies' ]);
+Route::get('reports/emergencies/pdf', [ReportController::class, 'getEmergenciesPDF']);
+
 Route::get('reports/patients', [ReportController::class, 'getPatients']);
 Route::get('reports/patientsPDF', [ReportController::class, 'getPatientsPDF']);
+
 
 //Route::apiResource('patients', PatientController::class)->middleware('api');
 //Route::get('/test', [OperatorController::class, 'show']);
