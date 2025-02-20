@@ -40,30 +40,30 @@ Route::middleware(['auth:sanctum', 'api'])->group(function () {
     Route::delete('/incoming-calls/{incomingCall}', [IncomingCallController::class, 'destroy']);
     Route::put('/incoming-calls/{incomingCall}', [IncomingCallController::class, 'update']);
     Route::get('incoming-calls/{incomingCall}', [IncomingCallController::class, 'show']);
-    
+
     Route::apiResource('outgoing-calls', OutgoingCallController::class);
     Route::post('outgoing-calls', [OutgoingCallController::class, 'store']);
     Route::delete('/outgoing-calls/{outgoingCall}', [OutgoingCallController::class, 'destroy']);
     Route::put('/outgoing-calls/{outgoingCall}', [OutgoingCallController::class, 'update']);
     Route::get('outgoing-calls/{outgoingCall}', [OutgoingCallController::class, 'show']);
-  
+
     Route::get('reports/patients', [ReportController::class, 'getPatients']);
     Route::get('reports/patientsPDF', [ReportController::class, 'getPatientsPDF']);
 
     Route::post('logout', [AuthController::class, 'logout']);
-});
 
-// Rutas de Informes 
-Route::get('reports/scheduled-calls-date', [ReportController::class, 'getScheduledCallsDate']);
-Route::get('reports/scheduled-calls-date-pdf', [ReportController::class, 'getScheduledCallsDatePDF']);
-Route::get('reports/patients/{id}/call-history', [ReportController::class, 'getPatientCallHistory']);
-Route::get('reports/patients/{id}/call-history/pdf', [ReportController::class, 'getPatientCallHistoryPDF']);
-Route::get('reports/callsUser',[ReportController::class, 'getCallsUser']);
-Route::get('reports/callsUser/pdf', [ReportController::class, 'getUserCallsPDF'])->name('reports.doneCallsPDF');
-Route::get('reports/done-calls', [ReportController::class, 'getDoneCallsByDate']);
-Route::get('reports/done-calls/pdf', [ReportController::class, 'getDoneCallsByDatePDF']);
-Route::get('reports/emergencies',[ReportController::class, 'getEmergencies' ]);
-Route::get('reports/emergencies/pdf', [ReportController::class, 'getEmergenciesPDF']);
+    // Rutas de Informes 
+    Route::get('reports/scheduled-calls-date', [ReportController::class, 'getScheduledCallsDate']);
+    Route::get('reports/scheduled-calls-date-pdf', [ReportController::class, 'getScheduledCallsDatePDF']);
+    Route::get('reports/patients/{id}/call-history', [ReportController::class, 'getPatientCallHistory']);
+    Route::get('reports/patients/{id}/call-history/pdf', [ReportController::class, 'getPatientCallHistoryPDF']);
+    Route::get('reports/callsUser', [ReportController::class, 'getCallsUser']);
+    Route::get('reports/callsUser/pdf', [ReportController::class, 'getUserCallsPDF'])->name('reports.doneCallsPDF');
+    Route::get('reports/done-calls', [ReportController::class, 'getDoneCallsByDate']);
+    Route::get('reports/done-calls/pdf', [ReportController::class, 'getDoneCallsByDatePDF']);
+    Route::get('reports/emergencies', [ReportController::class, 'getEmergencies']);
+    Route::get('reports/emergencies/pdf', [ReportController::class, 'getEmergenciesPDF']);
+});
 
 //Route::apiResource('patients', PatientController::class)->middleware('api');
 //Route::get('/test', [OperatorController::class, 'show']);
