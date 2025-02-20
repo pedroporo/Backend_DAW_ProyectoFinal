@@ -1672,6 +1672,651 @@
                 ]
             }
         },
+        "/api/reports/patients": {
+            "get": {
+                "tags": [
+                    "Reportes"
+                ],
+                "summary": "Obtener lista de pacientes asignados al teleoperador",
+                "operationId": "2a5299d2fcae96bcb4303cdb1d86f216",
+                "responses": {
+                    "200": {
+                        "description": "Lista de pacientes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Patient"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuario no autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/reports/patients/pdf": {
+            "get": {
+                "tags": [
+                    "Reportes"
+                ],
+                "summary": "Generar PDF con la lista de pacientes asignados",
+                "operationId": "be13ed592447950fb4563c162aa4a400",
+                "responses": {
+                    "200": {
+                        "description": "PDF generado correctamente de la lista de pacientes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "example": "patients_list.pdf"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuario no autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/reports/done-calls": {
+            "get": {
+                "tags": [
+                    "Reportes"
+                ],
+                "summary": "Obtener llamadas realizadas (salientes) por fecha",
+                "description": "Este endpoint permite obtener las llamadas realizadas por el usuario (salientes) filtradas por fecha.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/done-calls?date=2025-02-17`",
+                "operationId": "8b0f12c3a923e339c94361e6195c81ab",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Fecha en formato YYYY-MM-DD",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2025-02-18"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de llamadas realizadas por el usuario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "date": {
+                                            "type": "string",
+                                            "example": "2025-02-18"
+                                        },
+                                        "outgoing_calls": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/OutgoingCall"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuario no autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/reports/done-calls/pdf": {
+            "get": {
+                "tags": [
+                    "Reportes"
+                ],
+                "summary": "Generar PDF de llamadas realizadas por fecha",
+                "description": "Este endpoint permite generar un archivo PDF con las llamadas realizadas por el usuario (salientes) filtradas por una fecha específica.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/done-calls/pdf?date=2025-02-18`",
+                "operationId": "28fe61ffd93440852b0bea101b8aef56",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Fecha en formato YYYY-MM-DD",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2025-02-18"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF generado de llamadas realizadas por fecha",
+                        "content": {
+                            "application/pdf": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuario no autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/reports/scheduled-calls-pdf": {
+            "get": {
+                "tags": [
+                    "Reportes"
+                ],
+                "summary": "Generar PDF de llamadas planificadas",
+                "description": "Este endpoint genera un archivo PDF con las llamadas planificadas.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/scheduled-calls-pdf?date=2025-02-18`",
+                "operationId": "272059558a8ee77b14e4c392dff73443",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Fecha en formato YYYY-MM-DD para filtrar las llamadas planificadas.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2025-02-18"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF generado de llamadas planificadas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "example": "llamadas_planificadas.pdf"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuario no autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/reports/scheduled-calls-date": {
+            "get": {
+                "tags": [
+                    "Reportes"
+                ],
+                "summary": "Obtener llamadas planificadas por fecha",
+                "description": "Este endpoint devuelve las llamadas planificadas para una fecha específica.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/scheduled-calls-date?date=2025-02-18`",
+                "operationId": "b900007d528e51e8f74b9c0c6cebc210",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Fecha en formato YYYY-MM-DD",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2025-02-18"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de llamadas planificadas por fecha",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "date": {
+                                            "type": "string",
+                                            "example": "2025-02-18"
+                                        },
+                                        "scheduled_calls": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/OutgoingCall"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuario no autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/reports/scheduled-calls-date-pdf": {
+            "get": {
+                "tags": [
+                    "Reportes"
+                ],
+                "summary": "Obtener PDF de llamadas planificadas por fecha",
+                "operationId": "762d13f51a8c55e6ce0cf6c30146573e",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Fecha en formato YYYY-MM-DD",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2025-02-18"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF con las llamadas planificadas por fecha",
+                        "content": {
+                            "application/pdf": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuario no autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/reports/callsUser": {
+            "get": {
+                "tags": [
+                    "Reportes"
+                ],
+                "summary": "Obtener todas las llamadas del usuario",
+                "description": "Este endpoint permite obtener todas las llamadas del usuario, tanto las entrantes como las salientes.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/callsUser`",
+                "operationId": "f2138b2493f398a07abc95942803dbbe",
+                "responses": {
+                    "200": {
+                        "description": "Llamadas entrantes y salientes del usuario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "incoming_calls": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/IncomingCall"
+                                            }
+                                        },
+                                        "outgoing_calls": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/OutgoingCall"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuario no autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/reports/callsUser/pdf": {
+            "get": {
+                "tags": [
+                    "Reportes"
+                ],
+                "summary": "Obtener todas las llamadas del usuario en formato PDF",
+                "description": "Este endpoint permite obtener todas las llamadas del usuario (entrantes y salientes) en formato PDF.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/callsUser/pdf`",
+                "operationId": "b356cfaa9bb50094b7a0b20aae089611",
+                "responses": {
+                    "200": {
+                        "description": "Archivo PDF con las llamadas realizadas (entrantes y salientes) del usuario",
+                        "content": {
+                            "application/pdf": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Usuario no autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/reports/patients/{id}/call-history": {
+            "get": {
+                "tags": [
+                    "Reportes"
+                ],
+                "summary": "Obtener el historial de llamadas de un paciente",
+                "description": "Este endpoint obtiene el historial de llamadas de un paciente, tanto las entrantes como las salientes.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/patients/4/call-history`",
+                "operationId": "08db5f7986a19c42842ed924ccb66613",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del paciente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Historial de llamadas del paciente con llamadas entrantes y salientes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "patient": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "last_name": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "incoming_calls": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "timestamp": {
+                                                        "type": "string"
+                                                    },
+                                                    "details": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "outgoing_calls": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "timestamp": {
+                                                        "type": "string"
+                                                    },
+                                                    "details": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Paciente no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/reports/patients/{id}/call-history/pdf": {
+            "get": {
+                "tags": [
+                    "Reportes"
+                ],
+                "summary": "Obtener historial de llamadas de un paciente en formato PDF",
+                "description": "Este endpoint permite obtener el historial de llamadas (entrantes y salientes) de un paciente específico en formato PDF.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/patients/4/call-history/pdf`",
+                "operationId": "01ed3ec17d5da1d8465c14182755140e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del paciente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF generado con éxito",
+                        "content": {
+                            "application/pdf": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Paciente no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Paciente no encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/reports/emergencies": {
+            "get": {
+                "tags": [
+                    "Reportes"
+                ],
+                "summary": "Obtener emergencias filtradas por tipo y zona",
+                "description": "Este endpoint permite obtener las emergencias de tipo social, médica, crisis de soledad y alarmas no respondidas, con la opción de filtrar por zona.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/emergencies?zone=55`",
+                "operationId": "781744b2d1a9bec57f02463a5d1c9bf9",
+                "parameters": [
+                    {
+                        "name": "zone",
+                        "in": "query",
+                        "description": "ID de zona para filtrar las emergencias. Puede ser un solo ID o una lista de zonas.",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Emergencias obtenidas exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "zones": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "emergencies": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    },
+                                                    "timestamp": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "patient_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "patient": {
+                                                        "$ref": "#/components/schemas/Patient"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Petición inválida, formato de zona incorrecto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Zona no válida"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reports/emergencies/pdf": {
+            "get": {
+                "tags": [
+                    "Reportes"
+                ],
+                "summary": "Generar reporte en PDF de las emergencias filtradas por tipo y zona",
+                "description": "Este endpoint permite generar un reporte en formato PDF de las emergencias de tipo social, médica, crisis de soledad y alarmas no respondidas, con la opción de filtrar por zona.  \n *     **Ejemplo de uso:**  \n *     `http://localhost:8000/api/reports/emergencies/pdf?zone=55`",
+                "operationId": "e635490b76e894c3fad9a59dedcde51b",
+                "parameters": [
+                    {
+                        "name": "zone",
+                        "in": "query",
+                        "description": "ID de zona para filtrar las emergencias. Puede ser un solo ID o una lista de zonas.",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reporte PDF de emergencias generado exitosamente",
+                        "content": {
+                            "application/pdf": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Petición inválida, formato de zona incorrecto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Zona no válida"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/zones": {
             "get": {
                 "tags": [
@@ -2726,6 +3371,10 @@
         {
             "name": "Zonas",
             "description": "Zonas"
+        },
+        {
+            "name": "Reportes",
+            "description": "Reportes"
         }
     ]
 }
