@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OutGoingCallRequest;
 use Illuminate\Http\Request;
 use App\Models\OutgoingCall;
+use App\Http\Resources\OutgoingCallResource;
 
 /**
  * @OA\Tag(
  *     name="Outgoing Calls",
  *     description="Gestión de llamadas salientes"
  * )
+ * 
  */
 class OutgoingCallController extends Controller
 {
@@ -22,6 +24,7 @@ class OutgoingCallController extends Controller
      *     path="/api/outgoing-calls",
      *     summary="Listar todas las llamadas salientes",
      *     tags={"Outgoing Calls"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Lista de llamadas salientes",
@@ -36,7 +39,7 @@ class OutgoingCallController extends Controller
      */
     public function index()
     {
-        return response()->json(OutgoingCall::all());
+        return response()->json(OutgoingCallResource::collection(OutgoingCall::all()));
     }
 
 
@@ -45,6 +48,7 @@ class OutgoingCallController extends Controller
      *     path="/api/outgoing-calls/{id}",
      *     summary="Obtener una llamada saliente por ID",
      *     tags={"Outgoing Calls"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -66,7 +70,7 @@ class OutgoingCallController extends Controller
      */
     public function show(OutgoingCall $outgoingCall)
     {
-        return response()->json($outgoingCall);
+        return response()->json(new OutgoingCallResource($outgoingCall));
     }
 
     /**
@@ -74,6 +78,7 @@ class OutgoingCallController extends Controller
      *     path="/api/outgoing-calls",
      *     summary="Crear una nueva llamada saliente",
      *     tags={"Outgoing Calls"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(ref="#/components/schemas/OutgoingCall")
@@ -93,7 +98,7 @@ class OutgoingCallController extends Controller
     public function store(OutgoingCallRequest $request)
     {
         $outgoingCall = OutgoingCall::create($request->validated());
-        return response()->json($outgoingCall, 201);
+    return response()->json(new OutgoingCallResource($outgoingCall), 201);
     }
 
     /**
@@ -101,6 +106,7 @@ class OutgoingCallController extends Controller
      *     path="/api/outgoing-calls/{id}",
      *     summary="Actualizar una llamada saliente",
      *     tags={"Outgoing Calls"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -135,7 +141,7 @@ class OutgoingCallController extends Controller
 
         return response()->json([
             'message' => 'Outgoing call updated successfully',
-            'data' => $outgoingCall
+            'data' => new OutgoingCallResource($outgoingCall)
         ], 200);
     }
 
@@ -145,6 +151,7 @@ class OutgoingCallController extends Controller
  *     path="/api/outgoing-calls/{id}",
  *     summary="Eliminar una llamada saliente",
  *     tags={"Outgoing Calls"},
+ *     security={{"bearerAuth":{}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",

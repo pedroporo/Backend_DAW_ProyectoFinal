@@ -447,7 +447,100 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/filter-calls": {
+            "get": {
+                "tags": [
+                    "Calls"
+                ],
+                "summary": "Filtrar llamadas entrantes y salientes por fecha, zona y tipo",
+                "operationId": "9a1e54f01abf58cd819a4560d01691d6",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "Fecha para filtrar las llamadas (formato: YYYY-MM-DD)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2025-02-20"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Tipo de llamada a filtrar: 'incoming' o 'outgoing'",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "incoming"
+                        }
+                    },
+                    {
+                        "name": "zone",
+                        "in": "query",
+                        "description": "Zona para filtrar las llamadas",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "zone1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Llamadas filtradas correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "incoming_calls": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/IncomingCall"
+                                            }
+                                        },
+                                        "outgoing_calls": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/OutgoingCall"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Parámetros no válidos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/contacts": {
@@ -773,7 +866,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -817,7 +915,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/incoming-calls/{id}": {
@@ -865,7 +968,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -936,7 +1044,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -988,7 +1101,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/outgoing-calls": {
@@ -1027,7 +1145,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -1071,7 +1194,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/outgoing-calls/{id}": {
@@ -1119,7 +1247,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -1190,7 +1323,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -1242,7 +1380,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/patients": {

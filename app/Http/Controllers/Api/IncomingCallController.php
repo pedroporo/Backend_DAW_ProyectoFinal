@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\IncomingCallRequest;
 use App\Models\IncomingCall;
 use Illuminate\Http\Request;
-
+use App\Http\Resources\IncomingCallResource;
 /**
  * @OA\Tag(
  *     name="Incoming Calls",
  *     description="Gestión de llamadas entrantes"
  * )
+ * 
  */
 class IncomingCallController extends CallController
 {
@@ -21,6 +22,7 @@ class IncomingCallController extends CallController
      *     path="/api/incoming-calls",
      *     summary="Listar todas las llamadas entrantes",
      *     tags={"Incoming Calls"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="Lista de llamadas entrantes",
@@ -35,7 +37,7 @@ class IncomingCallController extends CallController
      */
     public function index()
     {
-        return response()->json(IncomingCall::all());
+        return IncomingCallResource::collection(IncomingCall::all());
     }
 
 
@@ -44,6 +46,7 @@ class IncomingCallController extends CallController
      *     path="/api/incoming-calls",
      *     summary="Crear una nueva llamada entrante",
      *     tags={"Incoming Calls"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(ref="#/components/schemas/IncomingCall")
@@ -63,7 +66,7 @@ class IncomingCallController extends CallController
     public function store(IncomingCallRequest $request)
     {
         $incomingCall = IncomingCall::create($request->validated());
-        return response()->json($incomingCall, 201);
+        return new IncomingCallResource($incomingCall);
     }
 
     /**
@@ -71,6 +74,7 @@ class IncomingCallController extends CallController
      *     path="/api/incoming-calls/{id}",
      *     summary="Obtener una llamada entrante por su ID",
      *     tags={"Incoming Calls"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -95,7 +99,7 @@ class IncomingCallController extends CallController
      */
     public function show(IncomingCall $incomingCall)
     {
-        return response()->json($incomingCall);
+        return new IncomingCallResource($incomingCall);
     }
 
     /**
@@ -103,6 +107,7 @@ class IncomingCallController extends CallController
      *     path="/api/incoming-calls/{id}",
      *     summary="Actualizar una llamada entrante",
      *     tags={"Incoming Calls"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -134,8 +139,8 @@ class IncomingCallController extends CallController
     public function update(IncomingCallRequest $request, IncomingCall $incomingCall)
     {
 
-        $incomingCall->update($request->all());
-        return response()->json($incomingCall);
+        $incomingCall->update($request->validated());
+        return new IncomingCallResource($incomingCall);
     }
 
     /**
@@ -143,6 +148,7 @@ class IncomingCallController extends CallController
      *     path="/api/incoming-calls/{id}",
      *     summary="Eliminar una llamada entrante",
      *     tags={"Incoming Calls"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",

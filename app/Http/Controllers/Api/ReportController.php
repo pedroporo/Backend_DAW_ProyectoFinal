@@ -245,6 +245,7 @@ class ReportController extends Controller
         return $pdf->download('llamadas_realizadas.pdf');
     }
 
+    //Podem filtrar per tipus per a no repetir codig
     public function getPatientCallHistory($patientId)
     {
         // Buscar el paciente

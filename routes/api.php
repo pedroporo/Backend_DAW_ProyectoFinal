@@ -38,10 +38,10 @@ Route::middleware(['auth:sanctum', 'api'])->group(function () {
     // Route::get('reports/done-calls',[ReportController::class, 'getDoneCalls']);
     // Route::get('reports/patient-history/{id}', [ReportController::class, 'getPatientHistory'])->middleware('api');
     
-    //Rutas de Calls - Comentado por problemas de autorizacion
     Route::apiResource('calls', CallController::class)->middleware('api');
     Route::get('patients/{id}/calls', [CallController::class, 'getCallsForPatient'])->middleware('api');
-    
+    Route::get('/filter-calls', [CallController::class, 'getFilterCalls']);
+
     Route::apiResource('incoming-calls', IncomingCallController::class);
     Route::post('incoming-calls', [IncomingCallController::class, 'store']);
     Route::delete('/incoming-calls/{incomingCall}', [IncomingCallController::class, 'destroy']);
@@ -57,6 +57,7 @@ Route::middleware(['auth:sanctum', 'api'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 });
 
+Route::get('/filter-calls', [CallController::class, 'getFilterCalls']);
 
 // Rutas de Informes 
 Route::get('reports/scheduled-calls', [ReportController::class, 'getScheduledCalls']);

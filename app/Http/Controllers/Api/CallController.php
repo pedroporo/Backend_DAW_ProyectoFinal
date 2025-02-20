@@ -16,6 +16,7 @@ use App\Models\Patient;
  *     name="Calls",
  *     description="Operaciones sobre las llamadas entrantes y salientes"
  * )
+ * 
  */
 class CallController extends BaseController
 {
@@ -53,6 +54,7 @@ class CallController extends BaseController
      *     path="/api/patients/{id}/calls",
      *     summary="Obtener todas las llamadas de un paciente (entrantes y salientes)",
      *     tags={"Calls"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -95,4 +97,142 @@ class CallController extends BaseController
         ]);
     }
 
+
+
+    /**
+     * @OA\Get(
+     *     path="/api/filter-calls",
+     *     summary="Filtrar llamadas entrantes y salientes por fecha, zona y tipo",
+     *     tags={"Calls"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="date",
+     *         in="query",
+     *         required=false,
+     *         description="Fecha para filtrar las llamadas (formato: YYYY-MM-DD)",
+     *         @OA\Schema(type="string", format="date", example="2025-02-20")
+     *     ),
+     *     @OA\Parameter(
+     *         name="type",
+     *         in="query",
+     *         required=false,
+     *         description="Tipo de llamada a filtrar: 'incoming' o 'outgoing'",
+     *         @OA\Schema(type="string", example="incoming")
+     *     ),
+     *     @OA\Parameter(
+     *         name="zone",
+     *         in="query",
+     *         required=false,
+     *         description="Zona para filtrar las llamadas",
+     *         @OA\Schema(type="string", example="zone1")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Llamadas filtradas correctamente",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="incoming_calls", type="array", @OA\Items(ref="#/components/schemas/IncomingCall")),
+     *             @OA\Property(property="outgoing_calls", type="array", @OA\Items(ref="#/components/schemas/OutgoingCall"))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Parámetros no válidos",
+     *         @OA\JsonContent(type="object", @OA\Property(property="error", type="string"))
+     *     )
+     * )
+     */
+    public function getFilterCalls(Request $request)
+{
+    $date = $request->query('date');
+    $type = $request->query('type');
+    $zone = $request->query('zone'); // Este es el patient_id
+
+    if ($type && strtolower($type) === 'incoming') {
+        $query = IncomingCall::query();
+
+        if ($zone) {
+            // Obtener el patient_id, y luego buscar el zone_id
+            $patient = Patient::find($zone); // El parámetro 'zone' es en realidad el patient_id
+            if ($patient) {
+                $zoneId = $patient->zone_id; // Obtener el zone_id del paciente
+                $query->whereHas('patient', function($q) use ($zoneId) {
+                    $q->where('zone_id', $zoneId); // Filtrar por zone_id del paciente
+                });
+            }
+        }
+
+        if ($date) {
+            // Filtramos por la fecha usando el campo 'timestamp'
+            $query->whereDate('timestamp', $date);
+        }
+
+        $incomingCalls = $query->get();
+
+        return response()->json([
+            'incoming_calls' => $incomingCalls
+        ]);
+    } elseif ($type && strtolower($type) === 'outgoing') {
+        $query = OutgoingCall::query();
+
+        if ($zone) {
+            // Obtener el patient_id, y luego buscar el zone_id
+            $patient = Patient::find($zone); // El parámetro 'zone' es en realidad el patient_id
+            if ($patient) {
+                $zoneId = $patient->zone_id; // Obtener el zone_id del paciente
+                $query->whereHas('patient', function($q) use ($zoneId) {
+                    $q->where('zone_id', $zoneId); // Filtrar por zone_id del paciente
+                });
+            }
+        }
+
+        if ($date) {
+            // Filtramos por la fecha usando el campo 'timestamp'
+            $query->whereDate('timestamp', $date);
+        }
+
+        $outgoingCalls = $query->get();
+
+        return response()->json([
+            'outgoing_calls' => $outgoingCalls
+        ]);
+    } else {
+        // Si no se especifica el tipo, devolvemos ambas, aplicando los filtros de fecha y zona
+        $incomingQuery = IncomingCall::query();
+        $outgoingQuery = OutgoingCall::query();
+
+        if ($zone) {
+            // Obtener el patient_id, y luego buscar el zone_id
+            $patient = Patient::find($zone); // El parámetro 'zone' es en realidad el patient_id
+            if ($patient) {
+                $zoneId = $patient->zone_id; // Obtener el zone_id del paciente
+                $incomingQuery->whereHas('patient', function($q) use ($zoneId) {
+                    $q->where('zone_id', $zoneId); // Filtrar por zone_id del paciente
+                });
+                $outgoingQuery->whereHas('patient', function($q) use ($zoneId) {
+                    $q->where('zone_id', $zoneId); // Filtrar por zone_id del paciente
+                });
+            }
+        }
+
+        if ($date) {
+            // Filtramos por la fecha usando el campo 'timestamp'
+            $incomingQuery->whereDate('timestamp', $date);
+            $outgoingQuery->whereDate('timestamp', $date);
+        }
+
+        $incomingCalls = $incomingQuery->get();
+        $outgoingCalls = $outgoingQuery->get();
+
+        return response()->json([
+            'incoming_calls' => $incomingCalls,
+            'outgoing_calls' => $outgoingCalls
+        ]);
+    }
 }
+
+}
+
+
+
+
