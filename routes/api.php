@@ -57,7 +57,6 @@ Route::middleware(['auth:sanctum', 'api'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 });
 
-Route::get('/filter-calls', [CallController::class, 'getFilterCalls']);
 
 // Rutas de Informes 
 Route::get('reports/scheduled-calls', [ReportController::class, 'getScheduledCalls']);
