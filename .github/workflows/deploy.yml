@@ -21,9 +21,10 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: 8.4
+        extensions: mbstring,xmlrpc,soap,gd,xml,curl,zip,bcmath,tokenizer,json,mysql
 
     - name: Instalar dependencias de composer
-      run: composer install --optimize-autoloader --no-dev --no-progress --no-interaction --prefer-dist
+      run: composer install --optimize-autoloader --no-progress --no-interaction --prefer-dist
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
@@ -32,26 +33,29 @@ jobs:
       run: npm install
     - name: Buil archivos npm
       run: npm run build
-    - name: Synchronize Files To Server
-      uses: easingthemes/ssh-deploy@main
+    - name: Configure SSH
+      uses: shimataro/ssh-key-action@v2
       with:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SOURCE: "."
-        REMOTE_HOST: ${{ secrets.HOST }}
-        REMOTE_USER: ${{ secrets.USER }}
-        TARGET: "/var/www/api"
-
-    - name: Run Remote/Artisan Commands
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+    - name: Deploy
+      uses: deployphp/action@master
+      with:
+        dep: deploy
+        private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        options: |
+         application: Backend API
+         keep_releases: 5
+         shared_dirs: ['./storage', './bootstrap/cache']
+         shared_files: ['.env']
+         writable_dirs: ['./storage', './bootstrap/cache']
+    - name: Cambiar permisos
       uses: appleboy/ssh-action@v0.1.6
       with:
         host: ${{ secrets.HOST }}
-        username: ${{ secrets.USER }}
+        username: ${{ secrets.ADMIN }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.PORT }}
         script: |
-          cd /var/www/api
-          php artisan migrate --force
-          php artisan optimize
-    
-
-
-    
+          sudo chown deployer:www-data /var/www/api -R
+        

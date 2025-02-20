@@ -15,7 +15,8 @@ use App\Http\Controllers\Api\CallController;
 
 Route::post('login', [AuthController::class, 'login'])->middleware('api');
 Route::post('register', [AuthController::class, 'register'])->middleware('api');
-
+Route::post('logout', [AuthController::class, 'logout'])->middleware('api');
+Route::get('login/google/callback', [AuthController::class, 'handleGoogleCallback'])->middleware('api');
 
 Route::middleware(['auth:sanctum', 'api'])->group(function () {
 

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\Alarms_type;
+use App\Models\Zone;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,7 @@ class AlertFactory extends Factory
     {
         $day = $this->faker->numberBetween(0, 7);
         return [
-            'zone_id' => $this->faker->numberBetween(1, 30),
+            'zone_id' => Zone::all()->random()->id,
             'type' => $this->faker->randomElement(Alarms_type::cases())->value,
             'start_date' => $this->faker->dateTime(),
             'end_date' => $this->faker->dateTime(),
