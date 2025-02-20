@@ -40,8 +40,9 @@ Listado de usuarios que ha contribuido en la realización (Incluir foto en forma
 
   </tbody>
 </table>
+
 ## Inspiración
 Este proyecto se desarrolla como respuesta a la crisis del COVID-19 y esta inspirado en la 
-cita previa de la ITV
+cita previa de la ITVa
 ## Licencia
 Este proyecto se desarrolla y distribuye de acuerdo a los términos de la [Licencia Mit](LICENSE) incluida.

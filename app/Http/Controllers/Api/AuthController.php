@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController as BaseController;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
-
+use Laravel\Socialite\Facades\Socialite;
 class AuthController extends BaseController
 {
     /**
@@ -54,11 +55,38 @@ class AuthController extends BaseController
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $authUser = Auth::user();
             $result['token'] =  $authUser->createToken('MyAuthApp')->plainTextToken;
-            $result['name'] =  $authUser->name;
-
+            $result['user'] = new UserResource($authUser);
             return $this->sendResponse($result, 'User signed in');
         }
         return $this->sendError('Unauthorised.', ['error' => 'incorrect Email/Password']);
+    }
+   
+    public function handleGoogleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
+
+            // Cerca o crea l'usuari a la base de dades
+            $user = User::updateOrCreate(
+                ['email' => $googleUser->email],
+                [
+                    'name' => $googleUser->name,
+                    'google_id' => $googleUser->id,
+                    'avatar' => $googleUser->avatar,
+                    'role' => 'operador',
+                ]
+            );
+
+            // Autentica l'usuari
+            Auth::login($user);
+            $result['token'] =  $user->createToken('Personal Access Token')->plainTextToken;
+            $result['user'] =  new UserResource($user);
+            return $this->sendResponse($result, 'User signed in');
+
+        } catch (\Exception $e) {
+            // Maneig d'errors
+            return view('auth.error', ['error' => $e->getMessage()]); // Asumint que tens una vista 'auth.error'
+        }
     }
     public function register(Request $request)
     {
