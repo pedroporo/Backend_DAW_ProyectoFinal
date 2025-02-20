@@ -87,7 +87,6 @@ class AuthController extends BaseController
     }
     public function logout(Request $request)
     {
-
         $user = request()->user(); //or Auth::user()
         $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
         $success['name'] =  $user->name;
