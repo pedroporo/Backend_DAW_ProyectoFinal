@@ -1,10 +1,8 @@
-# Proyecto Backend de paciente Z
-Poner imagen de la vista previa de la aplicación
+# Proyecto <font color="#3f3f3f">Backend</font> <font color="#ff0000">Paciente Z</font>
+
 # Descripción
-¿Qué es Lorem Ipsum?
-Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.
-¿Por qué lo usamos?
-Es un hecho establecido hace demasiado tiempo que un lector se distraerá con el contenido del texto de un sitio mientras que mira su diseño. El punto de usar Lorem Ipsum es que tiene una distribución más o menos normal de las letras, al contrario de usar textos como por ejemplo "Contenido aquí, contenido aquí". Estos textos hacen parecerlo un español que se puede leer. Muchos paquetes de autoedición y editores de páginas web usan el Lorem Ipsum como su texto por defecto, y al hacer una búsqueda de "Lorem Ipsum" va a dar por resultado muchos sitios web que usan este texto si se encuentran en estado de desarrollo. Muchas versiones han evolucionado a través de los años, algunas veces por accidente, otras veces a propósito (por ejemplo insertándole humor y cosas por el estilo).
+Pacientez es un proyecto de código abierto diseñado para desarrollar una aplicación de teleasistencia integral para pacientes, especialmente aquellos que requieren atención domiciliaria. El objetivo principal es mejorar la calidad de vida de los usuarios mediante una interacción sencilla y accesible.
+<sub>odio mi vida, porque quise hacer los redme</sub>
 # Tabla de Contenidos
 1. [Tecnologías utilizadas](#built-with)
 2. [Puesta en marcha](#puesta-en-marcha)
@@ -15,16 +13,30 @@ Es un hecho establecido hace demasiado tiempo que un lector se distraerá con el
 7. [Inspiración](#inspiración)
 8. [Licencia](#licencia)
 ## Tecnologías utilizadas
-Descripción de las tecnologías utilizadas para la construcción de proyecto
+Laravel,php,docker
 ## Puesta en Marcha
 Proceso de instalación, comandos, Requisitos, etc. Debemos tener en cuenta los entornos que hayamos definido
+
+### <font color="#2DC26B">Requisitos</font>
+- [Docker](https://www.docker.com/)
+- [Docker compose](https://getcomposer.org/download/)
+- [Laravel](https://laravel.com/docs/11.x/installation)
+- [PHP 8.4](https://php.watch/articles/php-84-install-upgrade-guide-debian-ubuntu)
+### <font color="#2DC26B">Puesta en marcha (comandos)</font>
+1. `cd /destino/del/proyecto/`
+2. `git clone https://github.com/pedroporo/Backend_DAW_ProyectoFinal`
+3. `composer install --optimize-autoloader --no-progress --no-interaction --prefer-dist`
+4. `alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'`
+5. `sail up -d`
+
 ## Entornos
-Enlaces a entornos de producción, staging, desarrollo (si existen)
+null
 ## Guía de Contribución 
 Cualquier contribución al proyecto deberá seguir las siguientes [normas de contribución](CONTRIBUTING.md).
 ## Documentación de desarrollo
 Enlace a la wiki / páginas con la documentación del proyecto
-Ejemplos https://github.com/mroutis/GitHub-Simple#documentaci%C3%B3n
+Ejemplos https://github.com/pedroporo/Frontend_DAW_ProyectoFinal/wiki
+
 ## Lista de Contribuidores
 Listado de usuarios que ha contribuido en la realización (Incluir foto en formato tabla)
 
@@ -42,7 +54,13 @@ Listado de usuarios que ha contribuido en la realización (Incluir foto en forma
 </table>
 
 ## Inspiración
-Este proyecto se desarrolla como respuesta a la crisis del COVID-19 y esta inspirado en la 
-cita previa de la ITVa
+La inspiración para un proyecto de teleasistencia como el que estás desarrollando puede provenir de varias fuentes y necesidades sociales actuales:
+
+1. **Demanda de Atención a Personas Mayores y Vulnerables**: La creciente población de personas mayores y la necesidad de mantener su autonomía en el hogar son factores clave. Proyectos como el de Cruz Roja con su tecnología humanitaria y el proyecto 'Activage' han demostrado el impacto positivo de la teleasistencia en la vida diaria de las personas mayores.
+2. **Innovación Tecnológica**: La integración de tecnologías como la inteligencia artificial, realidad aumentada, y dispositivos IoT ha permitido desarrollar soluciones más eficaces y personalizadas para la teleasistencia. Ejemplos como el proyecto 'EntamAR' de Cruz Roja Juventud y el servicio 'Serena' de ILUNION Sociosanitario muestran cómo estas tecnologías pueden mejorar la calidad de vida de los usuarios.
+3. **Necesidad de Prevención y Predicción**: Proyectos como el de ADINBERRI, que busca identificar situaciones de riesgo en personas mayores, destacan la importancia de la teleasistencia predictiva y preventiva para mejorar la atención y reducir la carga sobre el sistema sanitario.
+4. **Expectativas de los Consumidores de Servicios Sanitarios**: La demanda de opciones más personalizadas y accesibles en el cuidado de la salud está impulsando la innovación en teleasistencia, permitiendo a los pacientes tener más control sobre su atención médica.
+
+En resumen, la inspiración para un proyecto de teleasistencia proviene de la combinación de necesidades sociales, avances tecnológicos y la búsqueda de soluciones innovadoras para mejorar la calidad de vida de las personas vulnerables.
 ## Licencia
 Este proyecto se desarrolla y distribuye de acuerdo a los términos de la [Licencia Mit](LICENSE) incluida.
