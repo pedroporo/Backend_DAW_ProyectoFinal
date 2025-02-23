@@ -53,9 +53,11 @@ class PatientController extends BaseController
             foreach ($parameters as $key => $value) {
                 $patient_query->where($key,$value);
             }
-            return PatientResource::collection($patient_query->paginate());
+            //return PatientResource::collection($patient_query->paginate());
+            return PatientResource::collection($patient_query->all());
         }
-        return PatientResource::collection(Patient::paginate());
+        //return PatientResource::collection(Patient::paginate());
+        return PatientResource::collection(Patient::all());
     }
 
     /**
