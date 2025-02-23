@@ -69,7 +69,8 @@ class PatientRequest extends FormRequest
      */
     public function rules(): array
     {
-        dd($this);
+        //dd($this);
+        //dd($this->route('patient')->id);
         return [
             'name' => 'required',
             'last_name' => 'required',
@@ -78,7 +79,7 @@ class PatientRequest extends FormRequest
             'city' => 'required',
             'postal_code' => 'required|integer',
             'dni' => 'required',
-            'health_card_number' => 'required|unique:patients,health_card_number',
+            'health_card_number' => 'required|unique:patients,id,'.$this->route('patient')->id,
             'phone' => 'required',
             'email' => 'required',
             'zone_id' => 'required',
