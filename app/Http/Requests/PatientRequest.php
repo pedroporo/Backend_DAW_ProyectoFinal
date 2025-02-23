@@ -81,7 +81,7 @@ class PatientRequest extends FormRequest
             'health_card_number' => 'required|unique:patients',
             'phone' => 'required',
             'email' => 'required',
-            'zone_id' => 'required|integer',
+            'zone_id' => 'required',
             'personal_situation' => 'required',
             'health_situation' => 'required',
             'housing_situation' => 'required',
