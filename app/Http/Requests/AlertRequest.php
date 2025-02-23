@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Enums\Alarms_type;
 use App\Models\Alert;
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rules\Enum;
 class AlertRequest extends FormRequest
 {
    /**
@@ -57,7 +57,7 @@ class AlertRequest extends FormRequest
     {
         return [
             'zone_id' => 'required',
-            //'type' => 'required|in:' . array_column(Alarms_type::cases(), 'name'),
+            'type' => new Enum(Alarms_type::class),
             'start_date' => 'required',
             'end_date' => 'required'
         ];
