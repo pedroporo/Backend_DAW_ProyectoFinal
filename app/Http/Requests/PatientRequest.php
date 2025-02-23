@@ -77,7 +77,7 @@ class PatientRequest extends FormRequest
             'address' => 'required',
             'city' => 'required',
             'postal_code' => 'required|integer',
-            'dni' => 'required|integer',
+            'dni' => 'required',
             'health_card_number' => 'required|unique:patients',
             'phone' => 'required',
             'email' => 'required',

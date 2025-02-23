@@ -23,8 +23,13 @@ task('reload:php-fpm', function () {
     run('sudo /etc/init.d/php8.4-fpm restart');
 });
 
+task('artisan:migrate', function () {
+    run('{{bin/php}} {{release_path}}/artisan migrate --force');
+});
+
+
 after('deploy:failed', 'deploy:unlock');
 after('deploy', 'reload:php-fpm');
 before('deploy:symlink', 'artisan:key:generate');
-before('deploy:symlink', 'artisan:migrate:fresh');
+before('deploy:symlink', 'artisan:migrate');
 before('deploy:symlink', 'artisan:storage:link');
