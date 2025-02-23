@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('birth_date');
             $table->string('address');
             $table->string('city');
-            $table->integer('postal_code');
+            $table->string('postal_code');
             $table->string('dni');
             $table->integer('health_card_number')->unique();
             $table->string('phone');

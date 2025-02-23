@@ -77,7 +77,7 @@ class PatientRequest extends FormRequest
             'birth_date' => 'required',
             'address' => 'required',
             'city' => 'required',
-            'postal_code' => 'required|integer',
+            'postal_code' => 'required',
             'dni' => 'required',
             'health_card_number' => 'required|unique:patients,id,'.$this->route('patient')->id,
             'phone' => 'required',
