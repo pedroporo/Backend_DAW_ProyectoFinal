@@ -65,5 +65,6 @@ Route::middleware(['auth:sanctum', 'api'])->group(function () {
     Route::get('reports/emergencies/pdf', [ReportController::class, 'getEmergenciesPDF']);
 });
 
+
 //Route::apiResource('patients', PatientController::class)->middleware('api');
 //Route::get('/test', [OperatorController::class, 'show']);
