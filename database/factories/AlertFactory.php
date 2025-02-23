@@ -22,8 +22,8 @@ class AlertFactory extends Factory
         return [
             'zone_id' => Zone::all()->random()->id,
             'type' => $this->faker->randomElement(Alarms_type::cases())->value,
-            'start_date' => $this->faker->dateTime(),
-            'end_date' => $this->faker->dateTime(),
+            'start_date' => $this->faker->date(),
+            'end_date' => $this->faker->date(),
             'weekday' => $day == 0 ? null : $day,
             'description' => $this->faker->sentence(),
         ];
