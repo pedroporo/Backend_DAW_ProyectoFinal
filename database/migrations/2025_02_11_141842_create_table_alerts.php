@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('zone_id')->constrained();
             $table->enum('type',array_column(Alarms_type::cases(),'name'));
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->string('start_date');
+            $table->string('end_date');
             $table->tinyInteger('weekday')->nullable();
             $table->string('description')->nullable();
             $table->timestamps();

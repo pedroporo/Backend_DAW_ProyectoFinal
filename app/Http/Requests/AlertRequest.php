@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Enums\Alarms_type;
 use App\Models\Alert;
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rules\Enum;
 class AlertRequest extends FormRequest
 {
    /**
@@ -50,16 +50,16 @@ class AlertRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
+     *a
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
             'zone_id' => 'required',
-            'type' => 'required|in:' . array_column(Alarms_type::cases(), 'name'),
-            'start_date' => 'required|date|date_format:d-m-Y',
-            'end_date' => 'required|date|date_format:d-m-Y'
+            'type' => new Enum(Alarms_type::class),
+            'start_date' => 'required',
+            'end_date' => 'required'
         ];
     }
 }
