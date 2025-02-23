@@ -58,8 +58,8 @@ class AlertRequest extends FormRequest
         return [
             'zone_id' => 'required',
             'type' => 'required|in:' . array_column(Alarms_type::cases(), 'name'),
-            'start_date' => 'required|date|date_format:d-m-Y',
-            'end_date' => 'required|date|date_format:d-m-Y'
+            'start_date' => 'required',
+            'end_date' => 'required'
         ];
     }
 }
