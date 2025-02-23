@@ -15,7 +15,8 @@ use App\Http\Controllers\Api\CallController;
 
 Route::post('login', [AuthController::class, 'login'])->middleware('api');
 Route::post('register', [AuthController::class, 'register'])->middleware('api');
-
+Route::post('logout', [AuthController::class, 'logout'])->middleware('api');
+Route::get('login/google/callback', [AuthController::class, 'handleGoogleCallback'])->middleware('api');
 
 Route::middleware(['auth:sanctum', 'api'])->group(function () {
 
@@ -47,12 +48,11 @@ Route::middleware(['auth:sanctum', 'api'])->group(function () {
     Route::put('/outgoing-calls/{outgoingCall}', [OutgoingCallController::class, 'update']);
     Route::get('outgoing-calls/{outgoingCall}', [OutgoingCallController::class, 'show']);
 
-    Route::get('reports/patients', [ReportController::class, 'getPatients']);
-    Route::get('reports/patientsPDF', [ReportController::class, 'getPatientsPDF']);
-
     Route::post('logout', [AuthController::class, 'logout']);
 
     // Rutas de Informes 
+    Route::get('reports/patients', [ReportController::class, 'getPatients']);
+    Route::get('reports/patientsPDF', [ReportController::class, 'getPatientsPDF']);
     Route::get('reports/scheduled-calls-date', [ReportController::class, 'getScheduledCallsDate']);
     Route::get('reports/scheduled-calls-date-pdf', [ReportController::class, 'getScheduledCallsDatePDF']);
     Route::get('reports/patients/{id}/call-history', [ReportController::class, 'getPatientCallHistory']);
@@ -63,6 +63,16 @@ Route::middleware(['auth:sanctum', 'api'])->group(function () {
     Route::get('reports/done-calls/pdf', [ReportController::class, 'getDoneCallsByDatePDF']);
     Route::get('reports/emergencies', [ReportController::class, 'getEmergencies']);
     Route::get('reports/emergencies/pdf', [ReportController::class, 'getEmergenciesPDF']);
+    Route::get('reports/scheduled-calls', [ReportController::class, 'getScheduledCalls']);
+    Route::get('reports/scheduled-calls-pdf', [ReportController::class, 'getScheduledCallsPDF']);
+
+    Route::get('reports/scheduled-calls-date', [ReportController::class, 'getScheduledCallsDate']);
+    Route::get('reports/scheduled-calls-date-pdf', [ReportController::class, 'getScheduledCallsDatePDF']);
+    Route::get('reports/patients/{id}/call-history', [ReportController::class, 'getPatientCallHistory']);
+    Route::get('reports/patient-history/{id}', [ReportController::class, 'getPatientHistory']);
+    Route::get('reports/done-calls', [ReportController::class, 'getDoneCallsByDate']);
+    Route::get('reports/done-calls/pdf', [ReportController::class, 'getDoneCallsByDatePDF']);
+    Route::get('reports/patients/{id}/call-history/pdf', [ReportController::class, 'getPatientCallHistoryPDF']);
 });
 
 
