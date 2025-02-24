@@ -47,7 +47,8 @@ class AlertController extends BaseController
 
     public function index()
     {
-        return AlertResource::collection(Alert::paginate());
+        //return AlertResource::collection(Alert::paginate());
+        return AlertResource::collection(Alert::all());
     }
 
     /**
