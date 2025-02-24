@@ -172,6 +172,7 @@ class PatientController extends BaseController
 
     public function destroy(Patient $patient)
     {
+        $patient->contacts()->delete();
         $patient->delete();
         return $this->sendResponse(null, __('messages.patient.delete'), 201);
     }
