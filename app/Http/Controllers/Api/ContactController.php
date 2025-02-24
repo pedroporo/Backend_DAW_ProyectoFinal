@@ -48,7 +48,8 @@ class ContactController extends BaseController
      */
     public function index()
     {
-        return ContactResource::collection(Contact::paginate());
+        //return ContactResource::collection(Contact::paginate());
+        return ContactResource::collection(Contact::all());
     }
 
     /**

@@ -33,6 +33,14 @@ class AlertResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'zone' => new ZoneResource($this->zone),
+            'type' => $this->type,
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
+            'weekday' => $this->weekday,
+            'description' => $this->description,
+        ];
     }
 }
