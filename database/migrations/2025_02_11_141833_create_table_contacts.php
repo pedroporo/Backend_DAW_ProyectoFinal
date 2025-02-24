@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('phone');
-            $table->foreignId('patient_id')->constrained()->onDelete('cascade');
+            $table->foreignId('patient_id')->on('patients')->constrained()->cascadeOnDelete();
             $table->string('relationship');
             $table->timestamps();
         });
